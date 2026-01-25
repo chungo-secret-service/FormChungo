@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CHUNGO CLUB — Передать информацию</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+<style>
+:root {
+--bg: #0a0f14;
+--card: #11181f;
+--text: #e0e8f0;
+--muted: #a0b0c0;
+--accent: #006d77;
+--accent-hover: #0099a6;
+--success: #2ecc71;
+--border: #1c2a38;
+--info-bg: #0f2a3a;
+--info-border: #006d77;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+background: var(--bg);
+color: var(--text);
+font-family: 'Roboto', sans-serif;
+line-height: 1.6;
+font-size: 16px;
+padding: 40px 20px;
+min-height: 100vh;
+}
+.container { max-width: 920px; margin: 0 auto; }
+header { text-align: center; margin-bottom: 30px; }
+.logo { font-size: 1.9rem; font-weight: 700; letter-spacing: 2px; color: white; }
+h1 { font-size: 2.4rem; color: white; margin: 12px 0; font-weight: 400; }
+.progress {
+display: flex;
+justify-content: space-between;
+position: relative;
+margin: 50px 0 60px;
+}
+.progress::before {
+content: "";
+position: absolute;
+top: 13px;
+left: 0;
+right: 0;
+height: 3px;
+background: var(--border);
+z-index: 0;
+}
+.progress-line {
+position: absolute;
+top: 13px;
+left: 0;
+height: 3px;
+background: var(--accent);
+transition: width 0.5s ease;
+z-index: 1;
+}
+.step {
+position: relative;
+z-index: 2;
+width: 30px;
+height: 30px;
+background: var(--border);
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 1.05rem;
+color: white;
+font-weight: 500;
+transition: all 0.4s;
+}
+.step.active, .step.completed { background: var(--accent); }
+.step-label { margin-top: 12px; font-size: 0.92rem; color: var(--muted); text-align: center; }
+.info-bar {
+background: var(--info-bg);
+border-left: 5px solid var(--info-border);
+padding: 16px 24px;
+margin: 25px 0 35px;
+font-size: 0.98rem;
+color: #b0d0e0;
+}
+.info-bar strong { color: #e0f0ff; }
+.form-step {
+background: var(--card);
+padding: 35px;
+border: 1px solid var(--border);
+border-radius: 6px;
+display: none;
+}
+.form-step.active { display: block; }
+label.question {
+font-size: 1.15rem;
+font-weight: 500;
+margin-bottom: 18px;
+display: block;
+color: white;
+}
+.radio-group label {
+display: block;
+margin: 14px 0;
+font-size: 1.05rem;
+cursor: pointer;
+}
+input[type="radio"] {
+margin-right: 14px;
+transform: scale(1.3);
+accent-color: var(--accent);
+}
+.conditional { margin-top: 30px; display: none; }
+.conditional.show { display: block; }
+select, textarea, input[type="text"] {
+width: 100%;
+padding: 13px;
+background: #0b1117;
+color: var(--text);
+border: 1px solid var(--border);
+border-radius: 4px;
+font-size: 1rem;
+margin-top: 10px;
+resize: vertical;
+}
+textarea { min-height: 160px; }
+.buttons {
+display: flex;
+justify-content: space-between;
+margin-top: 50px;
+gap: 20px;
+}
+button {
+padding: 13px 40px;
+font-size: 1.1rem;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+transition: all 0.2s;
+flex: 1;
+max-width: 220px;
+}
+.prev { background: #1c2a38; color: white; }
+.prev:hover { background: #2a3c4e; }
+.next, .submit { background: var(--accent); color: white; }
+.next:hover, .submit:hover { background: var(--accent-hover); }
+.review-item { margin-bottom: 28px; }
+.review-item strong {
+color: #b0d0e0;
+display: block;
+margin-bottom: 8px;
+font-size: 1.05rem;
+}
+.review-item pre {
+white-space: pre-wrap;
+background: #0b1117;
+padding: 14px;
+border: 1px solid var(--border);
+border-radius: 4px;
+margin-top: 8px;
+font-family: inherit;
+}
+/* Успешная отправка / ошибка */
+#success-overlay {
+position: fixed;
+inset: 0;
+background: rgba(0,0,0,0.88);
+display: none;
+align-items: center;
+justify-content: center;
+z-index: 9999;
+opacity: 0;
+transition: opacity 0.7s;
+}
+#success-overlay.show { opacity: 1; display: flex; }
+.success-content {
+text-align: center;
+color: white;
+transform: scale(0.8);
+opacity: 0;
+transition: all 0.7s ease-out;
+}
+#success-overlay.show .success-content {
+transform: scale(1);
+opacity: 1;
+}
+.success-content.error p { color: #ff6b6b; }
+@media (max-width: 640px) {
+.buttons { flex-direction: column; }
+button { max-width: none; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<div class="logo">CHUNGO CLUB</div>
+<h1>Передать информацию</h1>
+</header>
+
+<div class="progress">
+<div class="progress-line" id="progressLine" style="width:0%"></div>
+<div><div class="step active" data-step="1">1</div><div class="step-label">Тема</div></div>
+<div><div class="step" data-step="2">2</div><div class="step-label">Сообщение</div></div>
+<div><div class="step" data-step="3">3</div><div class="step-label">Связь с вами</div></div>
+<div><div class="step" data-step="4">4</div><div class="step-label">Дополнительно</div></div>
+<div><div class="step" data-step="5">5</div><div class="step-label">Проверка</div></div>
+</div>
+
+<div class="info-bar">
+<strong>Важно:</strong> Не обновляйте страницу — данные будут потеряны.
+</div>
+
+<!-- Шаг 1 -->
+<div class="form-step active" id="step1">
+<label class="question">К чему относится ваше сообщение? *</label>
+<div class="radio-group">
+<label><input type="radio" name="theme" value="improvement" required> Улучшение сервера / идеи / предложения</label>
+<label><input type="radio" name="theme" value="violation"> Нарушение правил / жалоба на участника</label>
+<label><input type="radio" name="theme" value="security"> Безопасность клуба / подозрительная активность</label>
+<label><input type="radio" name="theme" value="event"> Идея мероприятия / ивента</label>
+<label><input type="radio" name="theme" value="other" id="otherRadio"> Другое</label>
+</div>
+<div class="conditional" id="otherConditional">
+<label class="question" style="margin-top:30px;">Если выбрано «Другое», уточните тему *</label>
+<select id="otherTheme" required>
+<option value="">Выберите вариант...</option>
+<option value="nitro">Nitro Boost / поддержка сервера</option>
+<option value="roles">Роли / ранги / доступы</option>
+<option value="channels">Новые каналы / категории</option>
+<option value="bots">Боты / функции / автоматизация</option>
+<option value="partnership">Партнёрство / реклама</option>
+<option value="confidential">Конфиденциальная информация</option>
+</select>
+</div>
+<div class="buttons">
+<button class="prev" disabled>Назад</button>
+<button class="next" onclick="nextStep(1)">Далее</button>
+</div>
+</div>
+
+<!-- Шаг 2 -->
+<div class="form-step" id="step2">
+<label class="question">Ваше сообщение *</label>
+<textarea id="message" required placeholder="Опишите подробно..."></textarea>
+<div class="buttons">
+<button class="prev" onclick="prevStep(2)">Назад</button>
+<button class="next" onclick="nextStep(2)">Далее</button>
+</div>
+</div>
+
+<!-- Шаг 3 -->
+<div class="form-step" id="step3">
+<label class="question">Как с вами связаться (если нужен ответ)?</label>
+<div class="radio-group">
+<label><input type="radio" name="contact" value="none" checked> Ответ не нужен</label>
+<label><input type="radio" name="contact" value="discord"> Discord (укажите @username или ID)</label>
+<label><input type="radio" name="contact" value="email"> Временная анонимная почта</label>
+<label><input type="radio" name="contact" value="other"> Другой безопасный способ</label>
+</div>
+<textarea id="contactDetails" placeholder="Детали контакта (если выбрали вариант выше)"></textarea>
+<div class="buttons">
+<button class="prev" onclick="prevStep(3)">Назад</button>
+<button class="next" onclick="nextStep(3)">Далее</button>
+</div>
+</div>
+
+<!-- Шаг 4 -->
+<div class="form-step" id="step4">
+<label class="question">Дополнительная информация (необязательно)</label>
+<label style="display:block; margin:20px 0 8px;">Временный ник / ID (если хотите)</label>
+<input type="text" id="nickname">
+<label style="display:block; margin:25px 0 8px;">Дополнительный контекст</label>
+<textarea id="context" rows="5"></textarea>
+<div class="buttons">
+<button class="prev" onclick="prevStep(4)">Назад</button>
+<button class="next" onclick="nextStep(4)">Далее</button>
+</div>
+</div>
+
+<!-- Шаг 5 – Проверка -->
+<div class="form-step" id="step5">
+<h2 style="color:white; margin-bottom:25px;">Проверьте перед отправкой</h2>
+<div class="review-item">
+<strong>Тема:</strong>
+<span id="reviewTheme">—</span>
+</div>
+<div class="review-item">
+<strong>Сообщение:</strong>
+<pre id="reviewMessage">—</pre>
+</div>
+<div class="review-item">
+<strong>Способ связи:</strong>
+<span id="reviewContact">—</span>
+</div>
+<div class="review-item">
+<strong>Дополнительно:</strong>
+<span id="reviewDetails">—</span>
+</div>
+<div class="buttons">
+<button class="prev" onclick="prevStep(5)">Назад</button>
+<button class="submit" onclick="submitForm()">Отправить</button>
+</div>
+</div>
+
+</div>
+
+<!-- Оверлей успешной отправки / ошибки -->
+<div id="success-overlay">
+<div class="success-content">
+<h2 style="font-size:2.5rem; margin-bottom:24px;" id="successTitle">Отправлено успешно!</h2>
+<p style="font-size:1.3rem; color:#b0d0e0; max-width:520px; margin:0 auto;" id="successText">
+Спасибо за доверие.<br>Сейчас вы будете перенаправлены на главную страницу...
+</p>
+</div>
+</div>
+
+<script>
+// =============================================
+// Основные переменные
+// =============================================
+let currentStep = 1;
+const totalSteps = 5;
+const progressLine = document.getElementById('progressLine');
+
+// =============================================
+// Функции навигации
+// =============================================
+function updateProgress() {
+    const percent = ((currentStep - 1) / (totalSteps - 1)) * 100;
+    progressLine.style.width = percent + '%';
+    document.querySelectorAll('.step').forEach((el, i) => {
+        const n = i + 1;
+        el.classList.toggle('completed', n < currentStep);
+        el.classList.toggle('active', n === currentStep);
+    });
+}
+
+function showStep(n) {
+    document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+    document.getElementById(`step${n}`).classList.add('active');
+    currentStep = n;
+    updateProgress();
+}
+
+function nextStep(from) {
+    let valid = true;
+
+    if (from === 1) {
+        const theme = document.querySelector('input[name="theme"]:checked');
+        if (!theme) valid = false;
+        if (theme?.value === 'other' && !document.getElementById('otherTheme').value) valid = false;
+    }
+    if (from === 2 && !document.getElementById('message').value.trim()) valid = false;
+
+    if (!valid) {
+        alert('Пожалуйста, заполните все обязательные поля');
+        return;
+    }
+
+    if (from < totalSteps) showStep(from + 1);
+    if (from === totalSteps - 1) updateReview();
+}
+
+function prevStep(from) {
+    if (from > 1) showStep(from - 1);
+}
+
+// =============================================
+// Обновление экрана проверки
+// =============================================
+function updateReview() {
+    const themeRadio = document.querySelector('input[name="theme"]:checked');
+    let themeText = themeRadio ? themeRadio.parentElement.textContent.trim() : '—';
+    if (themeRadio?.value === 'other') {
+        const other = document.getElementById('otherTheme').selectedOptions[0]?.text || '';
+        if (other) themeText += ` (${other})`;
+    }
+    document.getElementById('reviewTheme').textContent = themeText;
+
+    document.getElementById('reviewMessage').textContent = document.getElementById('message').value.trim() || '—';
+
+    const contactRadio = document.querySelector('input[name="contact"]:checked');
+    let contactText = contactRadio ? contactRadio.parentElement.textContent.trim() : '—';
+    const cDetails = document.getElementById('contactDetails').value.trim();
+    if (cDetails) contactText += ` (${cDetails})`;
+    document.getElementById('reviewContact').textContent = contactText;
+
+    const nick = document.getElementById('nickname').value.trim();
+    const ctx = document.getElementById('context').value.trim();
+    document.getElementById('reviewDetails').textContent =
+        (nick ? `Ник/ID: ${nick}` : '') +
+        (nick && ctx ? ' | ' : '') +
+        (ctx || '—');
+}
+
+// =============================================
+// Отправка через Discord Webhook
+// =============================================
+async function submitForm() {
+    const overlay = document.getElementById('success-overlay');
+    const titleEl   = document.getElementById('successTitle');
+    const textEl    = document.getElementById('successText');
+
+    // Собираем данные
+    const themeRadio = document.querySelector('input[name="theme"]:checked');
+    let theme = themeRadio ? themeRadio.parentElement.textContent.trim() : 'Не указано';
+    if (themeRadio?.value === 'other') {
+        const other = document.getElementById('otherTheme').selectedOptions[0]?.text || '';
+        if (other) theme += ` (${other})`;
+    }
+
+    const message = document.getElementById('message').value.trim() || '[не заполнено]';
+    const contactRadio = document.querySelector('input[name="contact"]:checked');
+    let contact = contactRadio ? contactRadio.parentElement.textContent.trim() : '—';
+    const contactDetails = document.getElementById('contactDetails').value.trim();
+    if (contactDetails) contact += ` → ${contactDetails}`;
+
+    const nickname = document.getElementById('nickname').value.trim() || '—';
+    const context  = document.getElementById('context').value.trim()  || '—';
+
+    // ←←← СЮДА СВОЙ WEBHOOK ←←←
+    const WEBHOOK_URL = "https://discord.com/api/webhooks/1464985167281127467/eX5Yt8zS4Psyn53gyiGi9e2HJqnDQx4zeqs60SyfpV817TYsCojfVB7xatO2OZLROPJU";
+
+    const payload = {
+        embeds: [{
+            title: "Новая заявка • CHUNGO CLUB",
+            color: 0x006d77,
+            description: message.length > 1800 ? message.substring(0, 1790) + "..." : message,
+            fields: [
+                { name: "Тема",       value: theme,                  inline: false },
+                { name: "Связь",      value: contact || "—",         inline: false },
+                { name: "Ник / ID",   value: nickname,               inline: true  },
+                { name: "Контекст",   value: context || "—",         inline: true  }
+            ],
+            timestamp: new Date().toISOString(),
+            footer: {
+                text: "Форма обратной связи • CHUNGO CLUB"
+            }
+        }]
+    };
+
+    try {
+        const response = await fetch(WEBHOOK_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        // Успех
+        titleEl.textContent = "Отправлено успешно!";
+        textEl.style.color = "#b0d0e0";
+        textEl.innerHTML = "Спасибо за доверие.<br>Администрация получит сообщение в ближайшее время.<br>Сейчас вы будете перенаправлены...";
+        overlay.classList.add('show');
+
+        localStorage.setItem('formSuccessMessage', 'Ваше сообщение успешно отправлено! Администрация получит его в ближайшее время.');
+
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 3400);
+
+    } catch (err) {
+        console.error("Ошибка отправки:", err);
+        titleEl.textContent = "Ошибка отправки";
+        textEl.style.color = "#ff6b6b";
+        textEl.innerHTML = "Не удалось доставить сообщение.<br>Попробуйте позже или напишите администрации напрямую в Discord.<br>Вы вернётесь на форму через 8 секунд...";
+        overlay.classList.add('show');
+        overlay.classList.add('error');
+
+        setTimeout(() => {
+            overlay.classList.remove('show');
+            overlay.classList.remove('error');
+        }, 8000);
+    }
+}
+
+// Обработчик поля "Другое"
+document.getElementById('otherRadio').addEventListener('change', function() {
+    const cond = document.getElementById('otherConditional');
+    cond.classList.toggle('show', this.checked);
+    document.getElementById('otherTheme').required = this.checked;
+});
+
+// Инициализация
+updateProgress();
+</script>
+</body>
+</html>

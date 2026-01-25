@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CHUNGO CLUB — Передать информацию / Предложения</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+<style>
+:root {
+  --bg-main: #0b1117;
+  --bg-darker: #05080c;
+  --bg-card: #11181f;
+  --text: #d9e2ec;
+  --text-muted: #a0b4c7;
+  --teal: #006d77;
+  --teal-hover: #0099a6;
+  --teal-light: #00a3b0;
+  --border: #1c2a38;
+  --warning: #ffaa00;
+  --footer-bg: #00353d;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body {
+  width: 100%;
+  min-height: 100%;
+  background: var(--bg-main);
+  color: var(--text);
+  font-family: 'Roboto', Arial, sans-serif;
+  line-height: 1.55;
+  font-size: 16px;
+  overflow-x: hidden;
+}
+.container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+/* Hero */
+.hero {
+  position: relative;
+  height: 420px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.45), var(--bg-main) 80%),
+              url('https://i.ibb.co/FLpXJGwg/Group-29-2.png') center center / cover no-repeat scroll;
+}
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding-bottom: 3.5rem;
+  width: 100%;
+}
+.chungo-logo {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  text-shadow: 0 3px 12px rgba(0,0,0,0.75);
+}
+.chungo-subtitle {
+  font-size: 3.2rem;
+  font-weight: 500;
+  color: white;
+  margin-top: 0.4rem;
+  text-shadow: 0 3px 14px rgba(0,0,0,0.8);
+}
+/* Main */
+main { padding: 3.5rem 0 7rem; }
+h1, h2 { color: white; font-weight: 400; margin-bottom: 1.5rem; }
+h1 { font-size: 2.7rem; }
+h2 { font-size: 2rem; }
+.intro, .urgent {
+  max-width: 860px;
+  margin: 0 auto 3.5rem;
+  font-size: 1.15rem;
+}
+.urgent {
+  background: rgba(180,0,0,0.13);
+  border-left: 5px solid #c00;
+  padding: 1.8rem 2.3rem;
+  margin: 3.5rem auto;
+}
+ul { list-style: none; padding-left: 1.6rem; }
+ul li { position: relative; margin-bottom: 1rem; }
+ul li::before { content: "•"; color: var(--teal); position: absolute; left: -1.3rem; font-size: 1.5rem; }
+/* Button */
+.start-btn {
+  display: block;
+  margin: 4rem auto 0;
+  background: var(--teal);
+  color: white;
+  padding: 1.4rem 4rem;
+  font-size: 1.4rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.start-btn:hover { background: var(--teal-hover); }
+/* Footer */
+footer {
+  background: var(--footer-bg);
+  padding: 3rem 0;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #b0d0d8;
+  border-top: 1px solid #00444d;
+}
+footer a { color: #80d0d8; text-decoration: none; margin: 0 1.2rem; }
+footer a:hover { color: white; }
+.copyright { margin-top: 1.8rem; color: #80a0b0; }
+@media (max-width: 768px) {
+  .hero { height: 360px; }
+  .chungo-subtitle { font-size: 2.5rem; }
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-content">
+    <div class="chungo-logo">CHUNGO CLUB</div>
+    <h1 class="chungo-subtitle">Связь / Предложения</h1>
+  </div>
+</header>
+
+<main class="container">
+
+  <section class="intro">
+    <h1>Связь с админами / Предложения по серверу</h1>
+    <p>Этот канал связи защищён на самом высоком уровне и позволяет безопасно обращаться к администрации CHUNGO CLUB.</p>
+    <p>Мы понимаем, что иногда хочется поделиться важной информацией, идеей или замечанием анонимно. Именно для этого и существует этот защищённый канал.</p>
+    <p>CHUNGO CLUB — это закрытое сообщество. Всё, что Вы напишете здесь, остаётся строго конфиденциальным. Мы никогда не раскрываем отправителей и не передаём данные третьим лицам.</p>
+    <p>Мы ждём от Вас:</p>
+    <ul>
+      <li>Предложения по улучшению сервера, правил, ролей, мероприятий</li>
+      <li>Сообщения о нарушениях, подозрительных аккаунтах, утечках</li>
+      <li>Идеи по новым каналам, событиям, коллаборациям</li>
+      <li>Конфиденциальную информацию, которая важна для безопасности клуба</li>
+    </ul>
+    <p>Если у Вас есть что-то ценное для сообщества — напишите. Каждое сообщение читается.</p>
+    <p><strong>Анонимность гарантирована. Мы не храним лишних логов и не привязываем сообщения к вашим аккаунтам.</strong></p>
+  </section>
+
+  <section class="urgent">
+    <h2>Срочные вопросы и угрозы безопасности</h2>
+    <p>Если речь идёт о реальной угрозе Вам лично, другим участникам клуба или о чём-то, что требует немедленного вмешательства — пожалуйста, пишите сразу в личку проверенному модератору.</p>
+    <p>Этот канал — не для мгновенной реакции, а для спокойной и защищённой передачи информации.</p>
+  </section>
+
+  <button class="start-btn" onclick="window.location.href='form.html'">Начать</button>
+
+</main>
+
+<footer>
+  <div class="container">
+    <a href="#">Политика конфиденциальности</a>
+    <a href="#">Правила клуба</a>
+    <div class="copyright">© CHUNGO CLUB 2026</div>
+  </div>
+</footer>
+
+</body>
+</html>
