@@ -1,218 +1,215 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CHUNGO SERVER — Передать информацию</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
-  <style>
-    /* весь твой CSS без изменений — оставляю как есть */
-    :root {
-      --bg: #0a0c10;
-      --surface: #11151c;
-      --surface-higher: #161b24;
-      --text: #e8edf5;
-      --text-sec: #a8b2c5;
-      --text-muted: #6b778c;
-      --primary: #006d77;
-      --primary-hover: #00838f;
-      --border: #2a3748;
-      --border-strong: #3a4a5f;
-      --radius: 6px;
-      --spacing-sm: 8px;
-      --spacing-md: 16px;
-      --spacing-lg: 24px;
-      --spacing-xl: 32px;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'IBM Plex Sans', system-ui, sans-serif;
-      font-size: 16px;
-      line-height: 1.5;
-      min-height: 100vh;
-      padding: var(--spacing-xl) var(--spacing-lg);
-    }
-    .container { max-width: 720px; margin: 0 auto; }
-    header { text-align: center; margin-bottom: 48px; }
-    .logo { font-size: 2.2rem; font-weight: 600; letter-spacing: 1px; color: white; }
-    h1 { font-size: 1.8rem; font-weight: 500; margin: 8px 0; }
-    .progress {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      position: relative;
-      margin: 48px 0 64px;
-      padding: 0 20px;
-    }
-    .progress-line {
-      position: absolute;
-      top: 19px;
-      left: 19px;
-      right: 19px;
-      height: 3px;
-      background: var(--border);
-      z-index: 0;
-    }
-    .progress-fill {
-      position: absolute;
-      top: 19px;
-      left: 19px;
-      height: 3px;
-      background: var(--primary);
-      transition: width 0.4s ease;
-      z-index: 1;
-    }
-    .step-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      flex: 1;
-      position: relative;
-      z-index: 2;
-    }
-    .step {
-      width: 38px;
-      height: 38px;
-      background: var(--surface);
-      border: 2px solid var(--border);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      transition: all 0.2s;
-    }
-    .step.active, .step.completed {
-      background: var(--primary);
-      color: white;
-      border-color: var(--primary);
-    }
-    .step-label {
-      margin-top: 10px;
-      font-size: 0.875rem;
-      color: var(--text-muted);
-      text-align: center;
-      white-space: nowrap;
-    }
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: var(--spacing-xl);
-      min-height: 340px;
-      display: flex;
-      flex-direction: column;
-    }
-    .question {
-      font-size: 1.25rem;
-      font-weight: 500;
-      margin-bottom: var(--spacing-lg);
-      color: white;
-    }
-    input[type="radio"] {
-      accent-color: var(--primary);
-      transform: scale(1.3);
-      margin-right: 12px;
-    }
-    .radio-group label {
-      display: flex;
-      align-items: center;
-      margin: 12px 0;
-      cursor: pointer;
-    }
-    .radio-group label:hover { opacity: 0.9; }
-    textarea, input[type="text"], select {
-      width: 100%;
-      padding: 14px 16px;
-      background: var(--bg);
-      border: 1px solid var(--border-strong);
-      border-radius: var(--radius);
-      color: var(--text);
-      font-size: 1rem;
-      margin-top: 12px;
-    }
-    textarea { min-height: 160px; resize: vertical; }
-    textarea:focus, input:focus, select:focus {
-      border-color: var(--primary);
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(0,109,119,0.2);
-    }
-    .buttons {
-      margin-top: auto;
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-    }
-    button {
-      padding: 12px 36px;
-      font-size: 1rem;
-      font-weight: 500;
-      border-radius: var(--radius);
-      cursor: pointer;
-      border: none;
-      transition: background 0.2s;
-      min-width: 140px;
-    }
-    button:disabled { opacity: 0.5; cursor: not-allowed; }
-    .prev { background: var(--surface-higher); color: var(--text-sec); }
-    .prev:hover:not(:disabled) { background: #1e2633; }
-    .next, .submit { background: var(--primary); color: white; }
-    .next:hover, .submit:hover { background: var(--primary-hover); }
-    .info-bar {
-      background: rgba(0,109,119,0.08);
-      border-left: 4px solid var(--primary);
-      padding: 16px 20px;
-      margin: 32px 0;
-      border-radius: var(--radius);
-      color: var(--text-sec);
-    }
-    .review-item { margin: 20px 0; }
-    .review-item strong {
-      color: var(--text-sec);
-      display: block;
-      margin-bottom: 6px;
-      font-size: 1rem;
-    }
-    .review-item pre {
-      background: var(--surface-higher);
-      padding: 16px;
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-      white-space: pre-wrap;
-      font-family: inherit;
-      margin-top: 8px;
-    }
-    #success-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(10,12,16,0.92);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-    }
-    #success-overlay.show { display: flex; }
-    .success-content {
-      background: var(--surface);
-      border-radius: 10px;
-      padding: 40px 32px;
-      text-align: center;
-      max-width: 480px;
-      border: 1px solid var(--border);
-    }
-    .hidden { display: none !important; }
-    @media (max-width: 600px) {
-      .progress { padding: 0 10px; }
-      .buttons { flex-direction: column; gap: 12px; }
-      button { width: 100%; min-width: auto; }
-      .card { padding: 32px 20px; }
-      .step-label { font-size: 0.8rem; }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CHUNGO SERVER — Передать информацию</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root {
+  --bg: #0a0c10;
+  --surface: #11151c;
+  --surface-higher: #161b24;
+  --text: #e8edf5;
+  --text-sec: #a8b2c5;
+  --text-muted: #6b778c;
+  --primary: #006d77;
+  --primary-hover: #00838f;
+  --border: #2a3748;
+  --border-strong: #3a4a5f;
+  --radius: 6px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  min-height: 100vh;
+  padding: var(--spacing-xl) var(--spacing-lg);
+}
+.container { max-width: 720px; margin: 0 auto; }
+header { text-align: center; margin-bottom: 48px; }
+.logo { font-size: 2.2rem; font-weight: 600; letter-spacing: 1px; color: white; }
+h1 { font-size: 1.8rem; font-weight: 500; margin: 8px 0; }
+/* остальной CSS без изменений — оставляю как был */
+.progress {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  margin: 48px 0 64px;
+  padding: 0 20px;
+}
+.progress-line {
+  position: absolute;
+  top: 19px;
+  left: 19px; right: 19px;
+  height: 3px;
+  background: var(--border);
+  z-index: 0;
+}
+.progress-fill {
+  position: absolute;
+  top: 19px;
+  left: 19px;
+  height: 3px;
+  background: var(--primary);
+  transition: width 0.4s ease;
+  z-index: 1;
+}
+.step-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  position: relative;
+  z-index: 2;
+}
+.step {
+  width: 38px; height: 38px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: all 0.2s;
+}
+.step.active, .step.completed {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+.step-label {
+  margin-top: 10px;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  text-align: center;
+  white-space: nowrap;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: var(--spacing-xl);
+  min-height: 340px;
+  display: flex;
+  flex-direction: column;
+}
+.question {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: var(--spacing-lg);
+  color: white;
+}
+input[type="radio"] {
+  accent-color: var(--primary);
+  transform: scale(1.3);
+  margin-right: 12px;
+}
+.radio-group label {
+  display: flex;
+  align-items: center;
+  margin: 12px 0;
+  cursor: pointer;
+}
+.radio-group label:hover { opacity: 0.9; }
+textarea, input[type="text"], select {
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 1rem;
+  margin-top: 12px;
+}
+textarea { min-height: 160px; resize: vertical; }
+textarea:focus, input:focus, select:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0,109,119,0.2);
+}
+.buttons {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+button {
+  padding: 12px 36px;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: var(--radius);
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s;
+  min-width: 140px;
+}
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+.prev { background: var(--surface-higher); color: var(--text-sec); }
+.prev:hover:not(:disabled) { background: #1e2633; }
+.next, .submit { background: var(--primary); color: white; }
+.next:hover, .submit:hover { background: var(--primary-hover); }
+.info-bar {
+  background: rgba(0,109,119,0.08);
+  border-left: 4px solid var(--primary);
+  padding: 16px 20px;
+  margin: 32px 0;
+  border-radius: var(--radius);
+  color: var(--text-sec);
+}
+.review-item { margin: 20px 0; }
+.review-item strong {
+  color: var(--text-sec);
+  display: block;
+  margin-bottom: 6px;
+  font-size: 1rem;
+}
+.review-item pre {
+  background: var(--surface-higher);
+  padding: 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  white-space: pre-wrap;
+  font-family: inherit;
+  margin-top: 8px;
+}
+#success-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10,12,16,0.92);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+#success-overlay.show { display: flex; }
+.success-content {
+  background: var(--surface);
+  border-radius: 10px;
+  padding: 40px 32px;
+  text-align: center;
+  max-width: 480px;
+  border: 1px solid var(--border);
+}
+.hidden { display: none !important; }
+@media (max-width: 600px) {
+  .progress { padding: 0 10px; }
+  .buttons { flex-direction: column; gap: 12px; }
+  button { width: 100%; min-width: auto; }
+  .card { padding: 32px 20px; }
+  .step-label { font-size: 0.8rem; }
+}
+</style>
 </head>
 <body>
 <div class="container">
@@ -220,15 +217,17 @@
     <div class="logo">CHUNGO SERVER</div>
     <h1>Передать информацию</h1>
   </header>
+
   <div class="progress">
     <div class="progress-line"></div>
-    <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    <div class="progress-fill" id="progressFill"></div>
     <div class="step-wrapper"><div class="step active">1</div><div class="step-label">Тема</div></div>
     <div class="step-wrapper"><div class="step">2</div><div class="step-label">Сообщение</div></div>
     <div class="step-wrapper"><div class="step">3</div><div class="step-label">Связь</div></div>
     <div class="step-wrapper"><div class="step">4</div><div class="step-label">Доп. инфо</div></div>
     <div class="step-wrapper"><div class="step">5</div><div class="step-label">Проверка</div></div>
   </div>
+
   <div class="info-bar">
     <strong>Важно:</strong> Не обновляйте страницу — данные будут потеряны.
   </div>
@@ -245,19 +244,19 @@
     </div>
     <div id="otherConditional" class="hidden">
       <div class="question" style="margin-top:32px;">Уточните тему *</div>
-      <select id="otherTheme" required>
+      <select id="otherTheme">
         <option value="">Выберите вариант...</option>
         <option value="nitro">Nitro Boost / поддержка сервера</option>
         <option value="roles">Роли / ранги / доступы</option>
         <option value="channels">Новые каналы / категории</option>
         <option value="bots">Боты / функции / автоматизация</option>
-        <option value="partnership">Партнёрство / реклада</option>
+        <option value="partnership">Партнёрство / реклама</option>
         <option value="confidential">Конфиденциальная информация</option>
       </select>
     </div>
     <div class="buttons">
       <button class="prev" disabled>Назад</button>
-      <button class="next" onclick="nextStep(1)">Далее</button>
+      <button class="next" data-next="1">Далее</button>
     </div>
   </div>
 
@@ -266,8 +265,8 @@
     <div class="question">Ваше сообщение *</div>
     <textarea id="message" required placeholder="Опишите подробно..."></textarea>
     <div class="buttons">
-      <button class="prev" onclick="prevStep(2)">Назад</button>
-      <button class="next" onclick="nextStep(2)">Далее</button>
+      <button class="prev" data-prev="2">Назад</button>
+      <button class="next" data-next="2">Далее</button>
     </div>
   </div>
 
@@ -282,8 +281,8 @@
     </div>
     <textarea id="contactDetails" placeholder="Детали контакта (если выбрали вариант выше)"></textarea>
     <div class="buttons">
-      <button class="prev" onclick="prevStep(3)">Назад</button>
-      <button class="next" onclick="nextStep(3)">Далее</button>
+      <button class="prev" data-prev="3">Назад</button>
+      <button class="next" data-next="3">Далее</button>
     </div>
   </div>
 
@@ -295,12 +294,12 @@
     <label style="display:block; margin:32px 0 8px; color:var(--text-sec);">Дополнительный контекст</label>
     <textarea id="context" placeholder="Любые полезные детали..." rows="4"></textarea>
     <div class="buttons">
-      <button class="prev" onclick="prevStep(4)">Назад</button>
-      <button class="next" onclick="nextStep(4)">Далее</button>
+      <button class="prev" data-prev="4">Назад</button>
+      <button class="next" data-next="4">Далее</button>
     </div>
   </div>
 
-  <!-- Шаг 5 – Проверка -->
+  <!-- Шаг 5 -->
   <div class="card hidden" id="step5">
     <div class="question" style="margin-bottom:32px;">Проверьте перед отправкой</div>
     <div class="review-item">
@@ -320,13 +319,12 @@
       <div id="reviewDetails">—</div>
     </div>
     <div class="buttons">
-      <button class="prev" onclick="prevStep(5)">Назад</button>
-      <button class="submit" onclick="submitForm()">Отправить</button>
+      <button class="prev" data-prev="5">Назад</button>
+      <button class="submit">Отправить</button>
     </div>
   </div>
 </div>
 
-<!-- Оверлей успеха / ошибки -->
 <div id="success-overlay">
   <div class="success-content">
     <h2 id="successTitle">Отправлено успешно!</h2>
@@ -337,105 +335,126 @@
 </div>
 
 <script>
-let currentStep = 1;
+// =============================================
+// КОНФИГУРАЦИЯ
+// =============================================
+const WEBHOOK_URL = "https://functions.yandexcloud.net/d4end240eoc18ul0jb1r";
+
+const currentStepEl = { value: 1 };
 const totalSteps = 5;
 
 function updateProgress() {
-  const percent = ((currentStep - 1) / (totalSteps - 1)) * 100;
-  document.getElementById('progressFill').style.width = percent + '%';
-  document.querySelectorAll('.step').forEach((el, i) => {
-    const n = i + 1;
-    el.classList.toggle('completed', n < currentStep);
-    el.classList.toggle('active', n === currentStep);
+  const percent = ((currentStepEl.value - 1) / (totalSteps - 1)) * 100;
+  document.getElementById("progressFill").style.width = percent + "%";
+  document.querySelectorAll(".step").forEach((el, i) => {
+    const stepNum = i + 1;
+    el.classList.toggle("completed", stepNum < currentStepEl.value);
+    el.classList.toggle("active", stepNum === currentStepEl.value);
   });
 }
 
 function showStep(n) {
-  document.querySelectorAll('.card').forEach(card => card.classList.add('hidden'));
-  document.getElementById(`step${n}`).classList.remove('hidden');
-  currentStep = n;
+  document.querySelectorAll(".card").forEach(c => c.classList.add("hidden"));
+  document.getElementById(`step${n}`).classList.remove("hidden");
+  currentStepEl.value = n;
   updateProgress();
   if (n === totalSteps) updateReview();
 }
 
-function nextStep(from) {
-  let valid = true;
-  if (from === 1) {
-    const selected = document.querySelector('input[name="theme"]:checked');
-    if (!selected) valid = false;
-    if (selected?.value === 'other' && !document.getElementById('otherTheme').value) valid = false;
+function validateStep(step) {
+  if (step === 1) {
+    const theme = document.querySelector('input[name="theme"]:checked');
+    if (!theme) return false;
+    if (theme.value === "other") {
+      return !!document.getElementById("otherTheme").value;
+    }
+    return true;
   }
-  if (from === 2) {
-    if (!document.getElementById('message').value.trim()) valid = false;
+  if (step === 2) {
+    return !!document.getElementById("message").value.trim();
   }
-  if (!valid) {
-    alert('Пожалуйста, заполните все обязательные поля');
+  return true;
+}
+
+function nextStep() {
+  if (!validateStep(currentStepEl.value)) {
+    alert("Пожалуйста, заполните все обязательные поля");
     return;
   }
-  if (from < totalSteps) {
-    showStep(from + 1);
+  if (currentStepEl.value < totalSteps) {
+    showStep(currentStepEl.value + 1);
   }
 }
 
-function prevStep(from) {
-  if (from > 1) showStep(from - 1);
+function prevStep() {
+  if (currentStepEl.value > 1) {
+    showStep(currentStepEl.value - 1);
+  }
 }
 
 function updateReview() {
-  const themeRadio = document.querySelector('input[name="theme"]:checked');
-  let themeText = themeRadio ? themeRadio.parentNode.textContent.trim() : '—';
-  if (themeRadio?.value === 'other') {
-    const otherText = document.getElementById('otherTheme').selectedOptions[0]?.text || '';
-    if (otherText) themeText += ` (${otherText})`;
+  const themeEl = document.querySelector('input[name="theme"]:checked');
+  let theme = themeEl ? themeEl.parentElement.textContent.trim() : "—";
+  if (themeEl?.value === "other") {
+    const opt = document.getElementById("otherTheme").selectedOptions[0];
+    if (opt?.value) theme += ` (${opt.text})`;
   }
-  document.getElementById('reviewTheme').textContent = themeText;
-
-  document.getElementById('reviewMessage').textContent = document.getElementById('message').value.trim() || '—';
-
-  const contactRadio = document.querySelector('input[name="contact"]:checked');
-  let contactText = contactRadio ? contactRadio.parentNode.textContent.trim() : '—';
-  const contactDet = document.getElementById('contactDetails').value.trim();
-  if (contactDet) contactText += ` (${contactDet})`;
-  document.getElementById('reviewContact').textContent = contactText;
-
-  const nick = document.getElementById('nickname').value.trim();
-  const ctx = document.getElementById('context').value.trim();
-  let details = [];
+  const msg = document.getElementById("message").value.trim() || "—";
+  const contactEl = document.querySelector('input[name="contact"]:checked');
+  let contact = contactEl ? contactEl.parentElement.textContent.trim() : "—";
+  const contactDet = document.getElementById("contactDetails").value.trim();
+  if (contactDet) contact += ` (${contactDet})`;
+  const nick = document.getElementById("nickname").value.trim();
+  const ctx = document.getElementById("context").value.trim();
+  const details = [];
   if (nick) details.push(`Ник/ID: ${nick}`);
   if (ctx) details.push(ctx);
-  document.getElementById('reviewDetails').textContent = details.length ? details.join(' | ') : '—';
+
+  document.getElementById("reviewTheme").textContent = theme;
+  document.getElementById("reviewMessage").textContent = msg;
+  document.getElementById("reviewContact").textContent = contact;
+  document.getElementById("reviewDetails").textContent = details.length ? details.join(" • ") : "—";
 }
 
 async function submitForm() {
-  const overlay = document.getElementById('success-overlay');
-  const title = document.getElementById('successTitle');
-  const text = document.getElementById('successText');
+  const overlay = document.getElementById("success-overlay");
+  const title = document.getElementById("successTitle");
+  const text = document.getElementById("successText");
 
-  const themeRadio = document.querySelector('input[name="theme"]:checked');
-  let theme = themeRadio ? themeRadio.parentNode.textContent.trim() : 'Не указано';
-  if (themeRadio?.value === 'other') {
-    const other = document.getElementById('otherTheme').selectedOptions[0]?.text || '';
-    if (other) theme += ` (${other})`;
+  // Собираем данные
+  const themeEl = document.querySelector('input[name="theme"]:checked');
+  let theme = themeEl ? themeEl.parentElement.textContent.trim() : "Не указано";
+  if (themeEl?.value === "other") {
+    const opt = document.getElementById("otherTheme").selectedOptions[0];
+    if (opt?.value) theme += ` (${opt.text})`;
   }
 
-  const message = document.getElementById('message').value.trim() || '[не заполнено]';
-  const contactRadio = document.querySelector('input[name="contact"]:checked');
-  let contact = contactRadio ? contactRadio.parentNode.textContent.trim() : '—';
-  const contactDetails = document.getElementById('contactDetails').value.trim();
-  if (contactDetails) contact += ` → ${contactDetails}`;
+  const rawMessage = document.getElementById("message").value.trim();
+  const message = rawMessage || "[не заполнено]";
 
-  const nickname = document.getElementById('nickname').value.trim() || '—';
-  const context = document.getElementById('context').value.trim() || '—';
+  const contactEl = document.querySelector('input[name="contact"]:checked');
+  let contact = contactEl ? contactEl.parentElement.textContent.trim() : "—";
+  const cDet = document.getElementById("contactDetails").value.trim();
+  if (cDet) contact += ` → ${cDet}`;
 
+  const nickname = document.getElementById("nickname").value.trim() || "—";
+  const context = document.getElementById("context").value.trim() || "—";
+
+  // Формируем payload с защитой от пустого сообщения
   const payload = {
+    content: rawMessage 
+      ? `` 
+      : `Новая анонимная заявка в CHUNGO SERVER`,
     embeds: [{
       title: "Новая заявка • CHUNGO SERVER",
       color: 0x006d77,
-      description: message.length > 1800 ? message.substring(0, 1790) + "..." : message,
+      description: rawMessage 
+        ? (rawMessage.length > 1800 ? rawMessage.slice(0,1790) + "…" : rawMessage) 
+        : "Сообщение не указано или скрыто",
       fields: [
-        { name: "Тема", value: theme, inline: false },
+        { name: "Тема", value: theme || "—", inline: false },
         { name: "Связь", value: contact || "—", inline: false },
-        { name: "Ник / ID", value: nickname, inline: true },
+        { name: "Ник / ID", value: nickname || "—", inline: true },
         { name: "Контекст", value: context || "—", inline: true }
       ],
       timestamp: new Date().toISOString(),
@@ -443,38 +462,58 @@ async function submitForm() {
     }]
   };
 
+  console.log("Отправляемый payload:", payload); // ← для отладки
+
   try {
-    const response = await fetch("/api/discord", {
+    const res = await fetch(WEBHOOK_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
     });
 
-    if (!response.ok) {
-      const errText = await response.text().catch(() => '');
-      throw new Error(`HTTP ${response.status} — ${errText}`);
+    if (!res.ok) {
+      const errText = await res.text().catch(() => "");
+      throw new Error(`HTTP ${res.status} — ${errText}`);
     }
 
     title.textContent = "Отправлено успешно!";
-    text.innerHTML = "Спасибо за доверие.<br>Администрация получит сообщение в ближайшее время.<br>Сейчас вы будете перенаправлены...";
-    overlay.classList.add('show');
-    setTimeout(() => { window.location.href = '/'; }, 4000);  // или 'index.html' если нужно
+    overlay.classList.add("show");
+    setTimeout(() => window.location.href = "/", 4000);
   } catch (err) {
     console.error("Ошибка отправки:", err);
+
+    let userMessage = "Не удалось отправить сообщение.<br>Попробуйте позже или напишите напрямую в Discord.";
+    if (err.message.includes("50006")) {
+      userMessage = "Discord отклонил сообщение (возможно пустое или неверный формат).";
+    } else if (err.message.includes("400")) {
+      userMessage = "Неверный формат данных (проверьте заполненные поля).";
+    } else if (err.message.includes("429")) {
+      userMessage = "Слишком много запросов. Подождите минуту и попробуйте снова.";
+    }
+
     title.textContent = "Ошибка отправки";
-    text.innerHTML = "Не удалось отправить сообщение.<br>Попробуйте позже или напишите в Discord напрямую.<br>Вернемся на форму через 8 секунд...";
-    overlay.classList.add('show');
-    setTimeout(() => overlay.classList.remove('show'), 8000);
+    text.innerHTML = `${userMessage}<br><br>Подробности в консоли браузера (F12 → Console).<br>Закроем окно через 10 секунд…`;
+    overlay.classList.add("show");
+    setTimeout(() => overlay.classList.remove("show"), 10000);
   }
 }
 
-// Обработчик "Другое"
-document.getElementById('otherRadio').addEventListener('change', function() {
-  document.getElementById('otherConditional').classList.toggle('hidden', !this.checked);
-  document.getElementById('otherTheme').required = this.checked;
+// События
+document.getElementById("otherRadio").addEventListener("change", e => {
+  const block = document.getElementById("otherConditional");
+  block.classList.toggle("hidden", !e.target.checked);
+  document.getElementById("otherTheme").required = e.target.checked;
 });
 
-// Инициализация
+// Делегирование кликов
+document.addEventListener("click", e => {
+  const t = e.target;
+  if (t.matches("[data-next]")) nextStep();
+  if (t.matches("[data-prev]")) prevStep();
+  if (t.matches(".submit")) submitForm();
+});
+
+// Старт
 showStep(1);
 </script>
 </body>
