@@ -441,14 +441,13 @@
 </div>
 
 <script>
-// ────────────────────────────────────────────────
-// Конфигурация
-const API_URL = "https://ваш-render-url.onrender.com/submit"; // ← обязательно заменить
-const SECRET_TOKEN = "ВАШ_СЕКРЕТНЫЙ_ТОКЕН"; // ← из .env на сервере
-const REDIRECT_URL = "/"; // или ссылка на дискорд
+
+const API_URL = "https://local-1-u0v3.onrender.com/submit"; 
+const SECRET_TOKEN = "9k2p7m4q8r5t1v3x6z0j";
+const REDIRECT_URL = "/"; 
 const COOLDOWN_KEY = "chungo_submit_time";
-const COOLDOWN_MS = 90000; // 1.5 минуты
-const MIN_FILL_MS = 45000; // минимум 45 секунд на заполнение
+const COOLDOWN_MS = 90000; 
+const MIN_FILL_MS = 45000;
 
 let currentStep = 1;
 const totalSteps = 5;
