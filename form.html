@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CHUNGO SERVER — Передать информацию</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
-    <script src="https://www.google.com/recaptcha/api.js?render=your_site_key_here"></script> <!-- Замените на ваш reCAPTCHA v3 site key -->
     <style>
     :root {
         --bg: #0a0c10;
@@ -25,252 +24,103 @@
         --spacing-lg: 24px;
         --spacing-xl: 32px;
     }
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+    * { margin:0; padding:0; box-sizing:border-box; }
     body {
-        background: var(--bg);
-        color: var(--text);
-        font-family: 'IBM Plex Sans', system-ui, sans-serif;
-        font-size: 16px;
-        line-height: 1.5;
-        min-height: 100vh;
-        padding: var(--spacing-xl) var(--spacing-lg);
+        background:var(--bg);
+        color:var(--text);
+        font-family:'IBM Plex Sans',system-ui,sans-serif;
+        font-size:16px;
+        line-height:1.5;
+        min-height:100vh;
+        padding:var(--spacing-xl) var(--spacing-lg);
     }
-    .container {
-        max-width: 720px;
-        margin: 0 auto;
-    }
-    header {
-        text-align: center;
-        margin-bottom: 48px;
-    }
-    .logo {
-        font-size: 2.2rem;
-        font-weight: 600;
-        letter-spacing: 1px;
-        color: white;
-    }
-    h1 {
-        font-size: 1.8rem;
-        font-weight: 500;
-        margin: 8px 0;
-    }
+    .container { max-width:720px; margin:0 auto; }
+    header { text-align:center; margin-bottom:48px; }
+    .logo { font-size:2.2rem; font-weight:600; letter-spacing:1px; color:white; }
+    h1 { font-size:1.8rem; font-weight:500; margin:8px 0; }
     .progress {
-        display: flex;
-        justify-content: space-between;
-        position: relative;
-        margin: 48px 0 64px;
-        padding: 0 20px;
+        display:flex; justify-content:space-between; position:relative;
+        margin:48px 0 64px; padding:0 20px;
     }
     .progress-line {
-        position: absolute;
-        top: 19px;
-        left: 19px;
-        right: 19px;
-        height: 3px;
-        background: var(--border);
-        z-index: 0;
+        position:absolute; top:19px; left:19px; right:19px; height:3px;
+        background:var(--border); z-index:0;
     }
     .progress-fill {
-        position: absolute;
-        top: 19px;
-        left: 19px;
-        height: 3px;
-        background: var(--primary);
-        transition: width 0.4s ease;
-        z-index: 1;
+        position:absolute; top:19px; left:19px; height:3px;
+        background:var(--primary); transition:width 0.4s ease; z-index:1;
     }
     .step-wrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        flex: 1;
-        position: relative;
-        z-index: 2;
+        display:flex; flex-direction:column; align-items:center; flex:1;
+        position:relative; z-index:2;
     }
     .step {
-        width: 38px;
-        height: 38px;
-        background: var(--surface);
-        border: 2px solid var(--border);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: var(--text-muted);
-        transition: all 0.2s;
+        width:38px; height:38px; background:var(--surface);
+        border:2px solid var(--border); border-radius:50%;
+        display:flex; align-items:center; justify-content:center;
+        font-size:1.1rem; font-weight:600; color:var(--text-muted);
+        transition:all 0.2s;
     }
     .step.active, .step.completed {
-        background: var(--primary);
-        color: white;
-        border-color: var(--primary);
+        background:var(--primary); color:white; border-color:var(--primary);
     }
-    .step-label {
-        margin-top: 10px;
-        font-size: 0.875rem;
-        color: var(--text-muted);
-        text-align: center;
-        white-space: nowrap;
-    }
+    .step-label { margin-top:10px; font-size:0.875rem; color:var(--text-muted); text-align:center; white-space:nowrap; }
     .card {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        padding: var(--spacing-xl);
-        min-height: 340px;
-        display: flex;
-        flex-direction: column;
+        background:var(--surface); border:1px solid var(--border); border-radius:10px;
+        padding:var(--spacing-xl); min-height:340px; display:flex; flex-direction:column;
     }
-    .question {
-        font-size: 1.25rem;
-        font-weight: 500;
-        margin-bottom: var(--spacing-lg);
-        color: white;
-    }
-    input[type="radio"] {
-        accent-color: var(--primary);
-        transform: scale(1.3);
-        margin-right: 12px;
-    }
-    .radio-group label {
-        display: flex;
-        align-items: center;
-        margin: 12px 0;
-        cursor: pointer;
-    }
-    .radio-group label:hover {
-        opacity: 0.9;
-    }
+    .question { font-size:1.25rem; font-weight:500; margin-bottom:var(--spacing-lg); color:white; }
+    input[type="radio"] { accent-color:var(--primary); transform:scale(1.3); margin-right:12px; }
+    .radio-group label { display:flex; align-items:center; margin:12px 0; cursor:pointer; }
+    .radio-group label:hover { opacity:0.9; }
     textarea, input[type="text"], select {
-        width: 100%;
-        padding: 14px 16px;
-        background: var(--bg);
-        border: 1px solid var(--border-strong);
-        border-radius: var(--radius);
-        color: var(--text);
-        font-size: 1rem;
-        margin-top: 12px;
+        width:100%; padding:14px 16px; background:var(--bg);
+        border:1px solid var(--border-strong); border-radius:var(--radius);
+        color:var(--text); font-size:1rem; margin-top:12px;
     }
-    textarea {
-        min-height: 160px;
-        resize: vertical;
-    }
+    textarea { min-height:160px; resize:vertical; }
     textarea:focus, input:focus, select:focus {
-        border-color: var(--primary);
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(0, 109, 119, 0.2);
+        border-color:var(--primary); outline:none; box-shadow:0 0 0 3px rgba(0,109,119,0.2);
     }
-    .buttons {
-        margin-top: auto;
-        display: flex;
-        justify-content: space-between;
-        gap: 16px;
-    }
+    .buttons { margin-top:auto; display:flex; justify-content:space-between; gap:16px; }
     button {
-        padding: 12px 36px;
-        font-size: 1rem;
-        font-weight: 500;
-        border-radius: var(--radius);
-        cursor: pointer;
-        border: none;
-        transition: all 0.2s;
-        min-width: 140px;
+        padding:12px 36px; font-size:1rem; font-weight:500;
+        border-radius:var(--radius); cursor:pointer; border:none;
+        transition:all 0.2s; min-width:140px;
     }
-    button:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-    .prev {
-        background: var(--surface-higher);
-        color: var(--text-sec);
-    }
-    .prev:hover:not(:disabled) {
-        background: #1e2633;
-    }
-    .next, .submit {
-        background: var(--primary);
-        color: white;
-    }
-    .next:hover, .submit:hover:not(:disabled) {
-        background: var(--primary-hover);
-    }
-    .submit.loading {
-        background: #004c52;
-        cursor: wait;
-    }
+    button:disabled { opacity:0.5; cursor:not-allowed; }
+    .prev { background:var(--surface-higher); color:var(--text-sec); }
+    .prev:hover:not(:disabled) { background:#1e2633; }
+    .next, .submit { background:var(--primary); color:white; }
+    .next:hover, .submit:hover:not(:disabled) { background:var(--primary-hover); }
+    .submit.loading { background:#004c52; cursor:wait; }
     .info-bar, .warning-bar {
-        padding: 16px 20px;
-        margin: 32px 0;
-        border-radius: var(--radius);
-        border-left: 4px solid var(--primary);
-        background: rgba(0, 109, 119, 0.08);
-        color: var(--text-sec);
+        padding:16px 20px; margin:32px 0; border-radius:var(--radius);
+        border-left:4px solid var(--primary); background:rgba(0,109,119,0.08);
+        color:var(--text-sec);
     }
-    .warning-bar {
-        border-left-color: var(--danger);
-        background: rgba(201, 79, 79, 0.1);
-    }
-    .review-item {
-        margin: 20px 0;
-    }
-    .review-item strong {
-        color: var(--text-sec);
-        display: block;
-        margin-bottom: 6px;
-        font-size: 1rem;
-    }
+    .warning-bar { border-left-color:var(--danger); background:rgba(201,79,79,0.1); }
+    .review-item { margin:20px 0; }
+    .review-item strong { color:var(--text-sec); display:block; margin-bottom:6px; font-size:1rem; }
     .review-item pre {
-        background: var(--surface-higher);
-        padding: 16px;
-        border-radius: var(--radius);
-        border: 1px solid var(--border);
-        white-space: pre-wrap;
-        font-family: inherit;
-        margin-top: 8px;
+        background:var(--surface-higher); padding:16px; border-radius:var(--radius);
+        border:1px solid var(--border); white-space:pre-wrap; font-family:inherit; margin-top:8px;
     }
     #success-overlay, #error-overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(10, 12, 16, 0.94);
-        display: none;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
+        position:fixed; inset:0; background:rgba(10,12,16,0.94);
+        display:none; align-items:center; justify-content:center; z-index:9999;
     }
     .overlay-content {
-        background: var(--surface);
-        border-radius: 10px;
-        padding: 40px 32px;
-        text-align: center;
-        max-width: 480px;
-        border: 1px solid var(--border);
+        background:var(--surface); border-radius:10px; padding:40px 32px;
+        text-align:center; max-width:480px; border:1px solid var(--border);
     }
-    .hidden {
-        display: none !important;
-    }
-    @media (max-width: 600px) {
-        .progress {
-            padding: 0 10px;
-        }
-        .buttons {
-            flex-direction: column;
-            gap: 12px;
-        }
-        button {
-            width: 100%;
-            min-width: auto;
-        }
-        .card {
-            padding: 32px 20px;
-        }
-        .step-label {
-            font-size: 0.8rem;
-        }
+    .hidden { display:none !important; }
+    @media (max-width:600px) {
+        .progress { padding:0 10px; }
+        .buttons { flex-direction:column; gap:12px; }
+        button { width:100%; min-width:auto; }
+        .card { padding:32px 20px; }
+        .step-label { font-size:0.8rem; }
     }
     </style>
 </head>
@@ -280,59 +130,30 @@
             <div class="logo">CHUNGO SERVER</div>
             <h1>Передать информацию</h1>
         </header>
+
         <div class="progress">
             <div class="progress-line"></div>
             <div class="progress-fill" id="progressFill"></div>
-            <div class="step-wrapper">
-                <div class="step active">1</div>
-                <div class="step-label">Тема</div>
-            </div>
-            <div class="step-wrapper">
-                <div class="step">2</div>
-                <div class="step-label">Сообщение</div>
-            </div>
-            <div class="step-wrapper">
-                <div class="step">3</div>
-                <div class="step-label">Связь</div>
-            </div>
-            <div class="step-wrapper">
-                <div class="step">4</div>
-                <div class="step-label">Доп. инфо</div>
-            </div>
-            <div class="step-wrapper">
-                <div class="step">5</div>
-                <div class="step-label">Проверка</div>
-            </div>
+            <div class="step-wrapper"><div class="step active">1</div><div class="step-label">Тема</div></div>
+            <div class="step-wrapper"><div class="step">2</div><div class="step-label">Сообщение</div></div>
+            <div class="step-wrapper"><div class="step">3</div><div class="step-label">Связь</div></div>
+            <div class="step-wrapper"><div class="step">4</div><div class="step-label">Доп. инфо</div></div>
+            <div class="step-wrapper"><div class="step">5</div><div class="step-label">Проверка</div></div>
         </div>
+
         <div class="info-bar">
-            <strong>Важно:</strong>
-             Не обновляйте страницу — данные будут потеряны.
-             
+            <strong>Важно:</strong> Не обновляйте страницу — данные будут потеряны.
         </div>
+
         <!-- Шаг 1 -->
         <div class="card" id="step1">
             <div class="question">К чему относится ваше сообщение? *</div>
             <div class="radio-group">
-                <label>
-                    <input type="radio" name="theme" value="improvement" required>
-                     Улучшение сервера / идеи / предложения
-                </label>
-                <label>
-                    <input type="radio" name="theme" value="violation">
-                     Нарушение правил / жалоба на участника
-                </label>
-                <label>
-                    <input type="radio" name="theme" value="security">
-                     Безопасность клуба / подозрительная активность
-                </label>
-                <label>
-                    <input type="radio" name="theme" value="event">
-                     Идея мероприятия / ивента
-                </label>
-                <label>
-                    <input type="radio" name="theme" value="other" id="otherRadio">
-                     Другое
-                </label>
+                <label><input type="radio" name="theme" value="improvement" required> Улучшение сервера / идеи / предложения</label>
+                <label><input type="radio" name="theme" value="violation"> Нарушение правил / жалоба на участника</label>
+                <label><input type="radio" name="theme" value="security"> Безопасность клуба / подозрительная активность</label>
+                <label><input type="radio" name="theme" value="event"> Идея мероприятия / ивента</label>
+                <label><input type="radio" name="theme" value="other" id="otherRadio"> Другое</label>
             </div>
             <div id="otherConditional" class="hidden">
                 <div class="question" style="margin-top:32px;">Уточните тему *</div>
@@ -351,35 +172,25 @@
                 <button class="next" data-next="1">Далее</button>
             </div>
         </div>
+
         <!-- Шаг 2 -->
         <div class="card hidden" id="step2">
             <div class="question">Ваше сообщение *</div>
-            <textarea id="message" placeholder="Опишите подробно... (минимум 15 символов)" required></textarea>
+            <textarea id="message" placeholder="Опишите подробно... (минимум 20 символов)" required></textarea>
             <div class="buttons">
                 <button class="prev" data-prev="2">Назад</button>
                 <button class="next" data-next="2">Далее</button>
             </div>
         </div>
+
         <!-- Шаг 3 -->
         <div class="card hidden" id="step3">
             <div class="question">Как с вами связаться (если нужен ответ)?</div>
             <div class="radio-group">
-                <label>
-                    <input type="radio" name="contact" value="none" checked>
-                     Ответ не нужен
-                </label>
-                <label>
-                    <input type="radio" name="contact" value="discord">
-                     Discord (@username или ID)
-                </label>
-                <label>
-                    <input type="radio" name="contact" value="email">
-                     Временная анонимная почта
-                </label>
-                <label>
-                    <input type="radio" name="contact" value="other">
-                     Другой безопасный способ
-                </label>
+                <label><input type="radio" name="contact" value="none" checked> Ответ не нужен</label>
+                <label><input type="radio" name="contact" value="discord"> Discord (@username или ID)</label>
+                <label><input type="radio" name="contact" value="email"> Временная анонимная почта</label>
+                <label><input type="radio" name="contact" value="other"> Другой безопасный способ</label>
             </div>
             <textarea id="contactDetails" placeholder="Укажите @username, ID, почту или другой контакт..."></textarea>
             <div class="buttons">
@@ -387,6 +198,7 @@
                 <button class="next" data-next="3">Далее</button>
             </div>
         </div>
+
         <!-- Шаг 4 -->
         <div class="card hidden" id="step4">
             <div class="question">Дополнительная информация (необязательно)</div>
@@ -399,156 +211,155 @@
                 <button class="next" data-next="4">Далее</button>
             </div>
         </div>
+
         <!-- Шаг 5 -->
         <div class="card hidden" id="step5">
             <div class="question" style="margin-bottom:32px;">Проверьте перед отправкой</div>
-            <div class="review-item">
-                <strong>Тема:</strong>
-                <div id="reviewTheme">—</div>
-            </div>
-            <div class="review-item">
-                <strong>Сообщение:</strong>
-                <pre id="reviewMessage">—</pre>
-            </div>
-            <div class="review-item">
-                <strong>Связь:</strong>
-                <div id="reviewContact">—</div>
-            </div>
-            <div class="review-item">
-                <strong>Дополнительно:</strong>
-                <div id="reviewDetails">—</div>
-            </div>
+            <div class="review-item"><strong>Тема:</strong><div id="reviewTheme">—</div></div>
+            <div class="review-item"><strong>Сообщение:</strong><pre id="reviewMessage">—</pre></div>
+            <div class="review-item"><strong>Связь:</strong><div id="reviewContact">—</div></div>
+            <div class="review-item"><strong>Дополнительно:</strong><div id="reviewDetails">—</div></div>
             <div class="buttons">
                 <button class="prev" data-prev="5">Назад</button>
                 <button class="submit" id="submitBtn">Отправить</button>
             </div>
         </div>
     </div>
+
     <div id="success-overlay" style="display:none;">
         <div class="overlay-content">
             <h2>Отправлено!</h2>
             <p style="margin-top:16px; color:var(--text-sec);">
-                Спасибо за сообщение.
-                <br>
-                Сейчас перенаправляем...
+                Спасибо за сообщение.<br>Сейчас перенаправляем...
             </p>
         </div>
     </div>
+
     <div id="error-overlay" style="display:none;">
         <div class="overlay-content">
             <h2 id="errorTitle">Ошибка отправки</h2>
             <p id="errorText" style="margin-top:16px; color:var(--text-sec);"></p>
         </div>
     </div>
+
     <script>
     const API_URL = "https://local-1-u0v3.onrender.com/submit";
-    const REDIRECT_URL = "/"; // ← можно заменить на "https://discord.gg/xxxx" или другую страницу
-    const RECAPTCHA_SITE_KEY = 'your_site_key_here'; // Замените на ваш reCAPTCHA v3 site key
-    const MIN_FILL_TIME_MS = 30000; // Минимум 30 секунд на заполнение формы (против ботов)
-    const COOLDOWN_MS = 60000; // 60 секунд между отправками (увеличено)
-    const LOCAL_STORAGE_KEY = 'chungo_submit_cooldown'; // Ключ для localStorage
+    const REDIRECT_URL = "/"; // или "https://discord.gg/xxxx"
+
+    // Защита от спама (клиентская часть)
+    const COOLDOWN_MS          = 90000;     // 1.5 минуты между отправками
+    const MIN_FILL_TIME_MS     = 45000;     // минимум 45 секунд на всю форму
+    const MIN_MESSAGE_LENGTH   = 20;
+    const LOCAL_STORAGE_KEY    = "chungo_form_last_submit";
+    const HONEYPOT_FIELD_NAME  = "website"; // скрытое поле для ботов
+
     let currentStep = 1;
     const totalSteps = 5;
     let isSubmitting = false;
-    let formStartTime = Date.now(); // Время начала заполнения
-    let sessionToken = crypto.randomUUID(); // Уникальный токен сессии (для сервера проверить уникальность)
+    let formStartTime = Date.now();
+    let sessionId = crypto.randomUUID ? crypto.randomUUID() : Date.now() + Math.random().toString(36).slice(2);
 
-    function getLastSubmitTime() {
-        return parseInt(localStorage.getItem(LOCAL_STORAGE_KEY) || '0', 10);
+    function getCooldown() {
+        return Number(localStorage.getItem(LOCAL_STORAGE_KEY)) || 0;
     }
 
-    function setLastSubmitTime(time) {
-        localStorage.setItem(LOCAL_STORAGE_KEY, time.toString());
+    function setCooldown(ts) {
+        localStorage.setItem(LOCAL_STORAGE_KEY, ts);
     }
 
     function updateProgress() {
-        const percent = ((currentStep - 1) / (totalSteps - 1)) * 100;
-        document.getElementById("progressFill").style.width = percent + "%";
-        document.querySelectorAll(".step").forEach((el, i) => {
-            const n = i + 1;
+        const pct = ((currentStep - 1) / (totalSteps - 1)) * 100;
+        document.getElementById("progressFill").style.width = pct + "%";
+        document.querySelectorAll(".step").forEach((el,i)=>{
+            const n = i+1;
             el.classList.toggle("completed", n < currentStep);
             el.classList.toggle("active", n === currentStep);
         });
     }
+
     function showStep(n) {
-        document.querySelectorAll(".card").forEach(c => c.classList.add("hidden"));
+        document.querySelectorAll(".card").forEach(c=>c.classList.add("hidden"));
         document.getElementById(`step${n}`).classList.remove("hidden");
         currentStep = n;
         updateProgress();
-        if (n === totalSteps)
-            updateReview();
+        if (n === totalSteps) updateReview();
     }
+
     function validateStep(step) {
         if (step === 1) {
-            const theme = document.querySelector('input[name="theme"]:checked');
-            if (!theme)
-                return "Выберите тему";
-            if (theme.value === "other" && !document.getElementById("otherTheme").value) {
-                return "Уточните тему в выпадающем списке";
+            const th = document.querySelector('input[name="theme"]:checked');
+            if (!th) return "Выберите тему";
+            if (th.value === "other" && !document.getElementById("otherTheme").value) {
+                return "Уточните тему";
             }
             return true;
         }
         if (step === 2) {
             const msg = document.getElementById("message").value.trim();
-            if (msg.length < 15) {
-                return `Сообщение слишком короткое (${msg.length} симв.). Минимум 15`;
+            if (msg.length < MIN_MESSAGE_LENGTH) {
+                return `Сообщение слишком короткое (${msg.length} из ${MIN_MESSAGE_LENGTH})`;
             }
             return true;
         }
         return true;
     }
+
     function nextStep() {
         const valid = validateStep(currentStep);
-        if (valid !== true) {
-            alert(valid);
-            return;
-        }
-        if (currentStep < totalSteps)
-            showStep(currentStep + 1);
+        if (valid !== true) { alert(valid); return; }
+        if (currentStep < totalSteps) showStep(currentStep + 1);
     }
+
     function prevStep() {
-        if (currentStep > 1)
-            showStep(currentStep - 1);
+        if (currentStep > 1) showStep(currentStep - 1);
     }
+
     function updateReview() {
-        const themeEl = document.querySelector('input[name="theme"]:checked');
-        let theme = themeEl ? themeEl.parentElement.textContent.trim() : "—";
-        if (themeEl?.value === "other") {
+        const thEl = document.querySelector('input[name="theme"]:checked');
+        let theme = thEl ? thEl.parentElement.textContent.trim() : "—";
+        if (thEl?.value === "other") {
             const opt = document.getElementById("otherTheme").selectedOptions[0];
-            if(opt?.value)
-                theme += ` (${opt.text})`;
+            if (opt?.value) theme += ` (${opt.text})`;
         }
+
         const msg = document.getElementById("message").value.trim() || "—";
-        const contactEl = document.querySelector('input[name="contact"]:checked');
-        let contact = contactEl ? contactEl.parentElement.textContent.trim() : "—";
-        const cDet = document.getElementById("contactDetails").value.trim();
-        if (cDet)
-            contact += ` (${cDet})`;
+        const ctEl = document.querySelector('input[name="contact"]:checked');
+        let contact = ctEl ? ctEl.parentElement.textContent.trim() : "—";
+        const det = document.getElementById("contactDetails").value.trim();
+        if (det) contact += ` (${det})`;
+
         const nick = document.getElementById("nickname").value.trim();
         const ctx = document.getElementById("context").value.trim();
-        const details = [];
-        if (nick)
-            details.push(`Ник/ID: ${nick}`);
-        if (ctx)
-            details.push(ctx);
+        const extras = [];
+        if (nick) extras.push(`Ник/ID: ${nick}`);
+        if (ctx) extras.push(ctx);
+
         document.getElementById("reviewTheme").textContent = theme;
         document.getElementById("reviewMessage").textContent = msg;
         document.getElementById("reviewContact").textContent = contact;
-        document.getElementById("reviewDetails").textContent = details.length ? details.join(" • ") : "—";
+        document.getElementById("reviewDetails").textContent = extras.length ? extras.join(" • ") : "—";
     }
+
     async function submitForm() {
         if (isSubmitting) return;
 
         const now = Date.now();
-        const lastSubmit = getLastSubmitTime();
-        if (now - lastSubmit < COOLDOWN_MS) {
-            const sec = Math.ceil((COOLDOWN_MS - (now - lastSubmit)) / 1000);
-            alert(`Подождите ещё ${sec} сек перед повторной отправкой`);
+        const last = getCooldown();
+
+        if (now - last < COOLDOWN_MS) {
+            const left = Math.ceil((COOLDOWN_MS - (now - last)) / 1000);
+            alert(`Подождите ещё ${left} сек`);
             return;
         }
 
         if (now - formStartTime < MIN_FILL_TIME_MS) {
-            alert('Форма заполнена слишком быстро. Пожалуйста, подождите и проверьте данные.');
+            alert("Форма заполнена слишком быстро. Пожалуйста, подождите немного.");
+            return;
+        }
+
+        // Проверка honeypot (боты часто заполняют скрытые поля)
+        if (document.getElementById(HONEYPOT_FIELD_NAME)?.value) {
+            alert("Ошибка валидации. Попробуйте снова.");
             return;
         }
 
@@ -558,102 +369,82 @@
         btn.textContent = "Отправка...";
         btn.classList.add("loading");
 
-        const successOverlay = document.getElementById("success-overlay");
-        const errorOverlay = document.getElementById("error-overlay");
-
-        // Получаем reCAPTCHA токен
-        let recaptchaToken;
-        try {
-            recaptchaToken = await grecaptcha.execute(RECAPTCHA_SITE_KEY, {action: 'submit'});
-        } catch (err) {
-            console.error('reCAPTCHA error:', err);
-            showError('Ошибка с reCAPTCHA. Попробуйте обновить страницу.');
-            resetSubmitBtn();
-            return;
-        }
+        const successOv = document.getElementById("success-overlay");
+        const errorOv   = document.getElementById("error-overlay");
 
         // Собираем данные
         const themeEl = document.querySelector('input[name="theme"]:checked');
         let theme = themeEl ? themeEl.parentElement.textContent.trim() : "Не указано";
         if (themeEl?.value === "other") {
-            const opt=document.getElementById("otherTheme")?.selectedOptions[0];
-            if(opt?.value)
-                theme += ` (${opt.text})`;
+            const opt = document.getElementById("otherTheme")?.selectedOptions[0];
+            if (opt?.value) theme += ` (${opt.text})`;
         }
-        const message = document.getElementById("message").value.trim() || "[не заполнено]";
-        const contactEl = document.querySelector('input[name="contact"]:checked');
-        let contact = contactEl ? contactEl.parentElement.textContent.trim() : "—";
-        const contactDet = document.getElementById("contactDetails").value.trim();
-        if (contactDet)
-            contact += ` → ${contactDet}`;
+
         const payload = {
             theme,
-            message,
-            contact,
-            nickname: document.getElementById("nickname").value.trim() || "—",
-            context: document.getElementById("context").value.trim() || "—",
+            message:    document.getElementById("message").value.trim() || "[не заполнено]",
+            contact:    document.querySelector('input[name="contact"]:checked')?.parentElement.textContent.trim() || "—",
+            contactDet: document.getElementById("contactDetails").value.trim() || "",
+            nickname:   document.getElementById("nickname").value.trim() || "—",
+            context:    document.getElementById("context").value.trim() || "—",
             clientTime: new Date().toISOString(),
-            formVersion: "2026-02-updated",
-            sessionToken, // Уникальный токен для проверки на сервере
-            recaptchaToken // Токен для проверки на сервере
+            sessionId,
+            formVersion:"2026-02-no-captcha"
         };
+
         try {
             const res = await fetch(API_URL, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
             });
+
             if (!res.ok) {
-                const errText = await res.text().catch(() => "");
-                throw new Error(`Ошибка ${res.status}${errText ? ' — ' + errText : ''}`);
+                const txt = await res.text().catch(()=>"(без описания)");
+                throw new Error(`Сервер ответил ${res.status} — ${txt}`);
             }
-            // Успех
-            setLastSubmitTime(now);
-            successOverlay.style.display = 'flex';
-            setTimeout(() => {
-                window.location.href = REDIRECT_URL;
-            }, 600);
+
+            setCooldown(now);
+            successOv.style.display = "flex";
+            setTimeout(()=> location.href = REDIRECT_URL, 800);
+
         } catch (err) {
-            console.error("Ошибка отправки:", err);
-            showError(`${err.message}<br><br>Попробуйте позже или напишите напрямую в Discord.`);
+            console.error(err);
+            document.getElementById("errorTitle").textContent = "Не удалось отправить";
+            document.getElementById("errorText").innerHTML =
+                `${err.message}<br><br>Попробуйте позже или напишите в Discord.<br>Окно закроется через 10 сек...`;
+            errorOv.style.display = "flex";
+            setTimeout(()=> errorOv.style.display = "none", 10000);
         } finally {
-            resetSubmitBtn();
+            isSubmitting = false;
+            btn.disabled = false;
+            btn.textContent = "Отправить";
+            btn.classList.remove("loading");
         }
     }
 
-    function showError(text) {
-        document.getElementById("errorTitle").textContent = "Не удалось отправить";
-        document.getElementById("errorText").innerHTML = text + '<br>Окно закроется через 10 секунд...';
-        document.getElementById("error-overlay").style.display = 'flex';
-        setTimeout(() => document.getElementById("error-overlay").style.display = 'none', 10000);
-    }
-
-    function resetSubmitBtn() {
-        isSubmitting = false;
-        const btn = document.getElementById("submitBtn");
-        btn.disabled = false;
-        btn.textContent = "Отправить";
-        btn.classList.remove("loading");
-    }
+    // Honeypot поле (скрытое от человека)
+    const honeypot = document.createElement("input");
+    honeypot.type = "text";
+    honeypot.name = HONEYPOT_FIELD_NAME;
+    honeypot.id = HONEYPOT_FIELD_NAME;
+    honeypot.style.position = "absolute";
+    honeypot.style.left = "-9999px";
+    document.body.appendChild(honeypot);
 
     // События
-    document.getElementById("otherRadio").addEventListener("change", e => {
-        const block = document.getElementById("otherConditional");
-        block.classList.toggle("hidden", !e.target.checked);
+    document.getElementById("otherRadio").addEventListener("change", e=>{
+        document.getElementById("otherConditional").classList.toggle("hidden", !e.target.checked);
         document.getElementById("otherTheme").required = e.target.checked;
     });
-    document.addEventListener("click", e => {
+
+    document.addEventListener("click", e=>{
         const t = e.target;
-        if (t.matches("[data-next]"))
-            nextStep();
-        if (t.matches("[data-prev]"))
-            prevStep();
-        if (t.id === "submitBtn")
-            submitForm();
+        if (t.matches("[data-next]")) nextStep();
+        if (t.matches("[data-prev]")) prevStep();
+        if (t.id === "submitBtn") submitForm();
     });
-    // Старт
+
     showStep(1);
     </script>
 </body>
