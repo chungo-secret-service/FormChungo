@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Передать информацию</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-page: #1b1d22;
+      --bg-content: #1b1d22;
+      --bg-panel: #20242b;
+      --teal: #005f63;
+      --teal-hover: #0a767b;
+      --text-main: #f0f2f4;
+      --text-muted: #cdd4dc;
+      --line: #6f7e90;
+      --line-soft: #3a424d;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+      width: 100%;
+    }
+
+    body {
+      background: var(--bg-page);
+      color: var(--text-main);
+      font-family: 'Roboto', Arial, sans-serif;
+      line-height: 1.46;
+      font-size: 16px;
+    }
+
+    .container {
+      width: min(1060px, calc(100% - 2rem));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      background: var(--teal);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .topbar-inner {
+      min-height: 86px;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      color: #ffffff;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.03;
+    }
+
+    .brand-text strong {
+      font-size: 1.46rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .brand-text small {
+      font-size: 0.86rem;
+      opacity: 0.95;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .topbar-title {
+      font-size: 2rem;
+      font-weight: 400;
+      margin-left: 1.1rem;
+      white-space: nowrap;
+    }
+
+    .hero {
+      width: 100%;
+      height: 308px;
+      background:
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.22)),
+        url('https://i.ibb.co/FLpXJGwg/Group-29-2.png') center center / cover no-repeat;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.12);
+    }
+
+    main {
+      background: var(--bg-content);
+      padding: 1.8rem 0 2.2rem;
+    }
+
+    .content {
+      width: min(1060px, calc(100% - 2rem));
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: clamp(2.3rem, 5.5vw, 3.15rem);
+      line-height: 1.08;
+      margin-bottom: 0.95rem;
+      font-weight: 400;
+      color: #f3f5f7;
+    }
+
+    h2 {
+      font-size: clamp(2.05rem, 4vw, 2.7rem);
+      line-height: 1.14;
+      margin: 1.6rem 0 0.8rem;
+      font-weight: 400;
+      color: #f1f4f7;
+    }
+
+    h3 {
+      font-size: clamp(2rem, 3.8vw, 2.6rem);
+      line-height: 1.16;
+      margin: 1.4rem 0 0.75rem;
+      font-weight: 400;
+    }
+
+    p {
+      margin-bottom: 0.88rem;
+      color: var(--text-main);
+      max-width: 62em;
+      font-size: clamp(1rem, 1.2vw, 1.15rem);
+      line-height: 1.43;
+    }
+
+    .lang-block {
+      margin: 1.15rem 0 1.2rem;
+      max-width: 360px;
+    }
+
+    .lang-block label {
+      display: block;
+      margin-bottom: 0.56rem;
+      color: var(--text-main);
+      font-size: clamp(0.95rem, 1.05vw, 1.06rem);
+      font-weight: 500;
+    }
+
+    .lang-block select {
+      width: 100%;
+      background: #1f242c;
+      border: 1px solid #8794a4;
+      color: #f4f6f9;
+      padding: 0.72rem 2.4rem 0.72rem 0.75rem;
+      font-size: clamp(0.95rem, 1.03vw, 1.05rem);
+      appearance: none;
+      border-radius: 2px;
+      background-image:
+        linear-gradient(45deg, transparent 50%, #d5dde5 50%),
+        linear-gradient(135deg, #d5dde5 50%, transparent 50%);
+      background-position:
+        calc(100% - 18px) calc(50% - 3px),
+        calc(100% - 12px) calc(50% - 3px);
+      background-size: 6px 6px, 6px 6px;
+      background-repeat: no-repeat;
+    }
+
+    ul {
+      margin: 0.6rem 0 1.1rem 1.2rem;
+      max-width: 62em;
+    }
+
+    li {
+      margin-bottom: 0.45rem;
+      font-size: clamp(1rem, 1.2vw, 1.15rem);
+      color: var(--text-main);
+    }
+
+    .accordion {
+      margin-top: 1.35rem;
+      max-width: 62em;
+      border-top: 1px solid var(--line);
+    }
+
+    details {
+      border-bottom: 1px solid var(--line);
+      background: var(--bg-panel);
+    }
+
+    details + details {
+      margin-top: 0.2rem;
+    }
+
+    summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 0.85rem 0.92rem;
+      font-size: clamp(1rem, 1.08vw, 1.1rem);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #f4f7fa;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    summary::after {
+      content: '\25be';
+      color: #d7dee7;
+      font-size: 0.98rem;
+      margin-left: 1rem;
+      transition: transform 0.2s ease;
+    }
+
+    details[open] summary::after {
+      transform: rotate(180deg);
+    }
+
+    .details-body {
+      padding: 0 0.92rem 0.9rem;
+      color: var(--text-muted);
+      font-size: clamp(0.95rem, 1.03vw, 1.02rem);
+      line-height: 1.42;
+      max-width: 62em;
+    }
+
+    .start-wrap {
+      margin-top: 0.6rem;
+    }
+
+    .start-btn {
+      border: none;
+      background: var(--teal);
+      color: white;
+      font-size: clamp(0.95rem, 1vw, 1.02rem);
+      font-weight: 700;
+      padding: 0.86rem 1.85rem;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background 0.2s ease;
+    }
+
+    .start-btn:hover {
+      background: var(--teal-hover);
+    }
+
+    .footer-links {
+      margin-top: 1.6rem;
+      background: var(--teal);
+      border-top: 1px solid rgba(255, 255, 255, 0.16);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+    }
+
+    .footer-links-inner {
+      width: min(1060px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 1rem 0;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: #f2fbff;
+      text-decoration: underline;
+      font-size: clamp(0.92rem, 1vw, 1rem);
+    }
+
+    .copyright {
+      background: #171a1f;
+      color: #e3ebf1;
+      padding: 0.9rem 0 1rem;
+      font-size: clamp(0.95rem, 1vw, 1rem);
+    }
+
+    .copyright .container {
+      width: min(1060px, calc(100% - 2rem));
+    }
+
+    @media (max-width: 900px) {
+      .topbar-inner {
+        min-height: 72px;
+        flex-wrap: wrap;
+        padding: 0.7rem 0;
+      }
+
+      .brand-mark {
+        width: 44px;
+        height: 44px;
+      }
+
+      .brand-text strong {
+        font-size: 1.2rem;
+      }
+
+      .topbar-title {
+        margin-left: 0;
+        width: 100%;
+        font-size: 1.55rem;
+      }
+
+      .hero {
+        height: 210px;
+      }
+
+      p,
+      li {
+        line-height: 1.5;
+      }
+    }
+
+    @media (max-width: 560px) {
+      body {
+        font-size: 16px;
+      }
+
+      .container,
+      .content,
+      .footer-links-inner,
+      .copyright .container {
+        width: calc(100% - 1rem);
+      }
+
+      .hero {
+        height: 165px;
+      }
+
+      .start-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="topbar">
+      <div class="container topbar-inner">
+        <div class="brand">
+         <img class="brand-mark" src="https://i.ibb.co/GQ91QN0d/Group-61.png">
+          <div class="brand-text">
+            <small>CHUNGO SECRET SERVICE</small>
+            <strong>CHUNGO SECRET</strong>
+          </div>
+        </div>
+        <div class="topbar-title">Передать информацию</div>
+      </div>
+    </div>
+
+    <div class="hero" aria-hidden="true"></div>
+  </header>
+
+  <main>
+    <div class="content">
+      <h1>Связь с админами / Предложения по серверу</h1>
+
+      <div class="lang-block">
+        <label for="lang">Выбор языка</label>
+        <select id="lang" name="lang">
+          <option selected>Русский язык</option>
+          <option>English</option>
+        </select>
+      </div>
+
+      <p>
+        Этот канал связи защищён на самом высоком уровне и позволяет безопасно обращаться к администрации CHUNGO SERVER.
+      </p>
+      <p>
+        Мы понимаем, что иногда хочется поделиться важной информацией, идеей или замечанием анонимно.
+        Именно для этого и существует этот защищённый канал.
+      </p>
+      <p>
+        CHUNGO SERVER — это закрытое сообщество. Всё, что вы напишете здесь, остаётся строго конфиденциальным.
+        Мы никогда не раскрываем отправителей и не передаём данные третьим лицам.
+      </p>
+
+      <p>
+        Мы ждём от вас:
+      </p>
+
+      <ul>
+        <li>Предложения по улучшению сервера, правил, ролей, мероприятий.</li>
+        <li>Сообщения о нарушениях, подозрительных аккаунтах, утечках.</li>
+        <li>Идеи по новым каналам, событиям, коллаборациям.</li>
+        <li>Конфиденциальную информацию, которая важна для безопасности клуба.</li>
+      </ul>
+
+      <p>
+        Если у вас есть что-то ценное для сообщества — напишите. Каждое сообщение читается.
+      </p>
+      <p>
+        <strong>Анонимность гарантирована. Мы не храним лишних логов и не привязываем сообщения к вашим аккаунтам.</strong>
+      </p>
+
+      <h2>Срочные вопросы и угрозы безопасности</h2>
+      <p>
+        Если речь идёт о реальной угрозе вам лично, другим участникам клуба или о чём-то, что требует немедленного вмешательства
+        — пожалуйста, пишите сразу в личку проверенному модератору.
+      </p>
+      <p>
+        Этот канал — не для мгновенной реакции, а для спокойной и защищённой передачи информации.
+      </p>
+
+      <div class="accordion">
+        <details>
+          <summary>Как связаться с нами</summary>
+          <div class="details-body">
+            Заполните форму ниже и оставьте безопасный контакт только если хотите получить обратную связь.
+          </div>
+        </details>
+        <details>
+          <summary>Чего ожидать?</summary>
+          <div class="details-body">
+            Ваше сообщение проходит ручную проверку. При необходимости модераторы свяжутся с вами выбранным способом.
+          </div>
+        </details>
+        <details>
+          <summary>Подбор персонала</summary>
+          <div class="details-body">
+            Этот канал не является формой найма. Он предназначен исключительно для передачи оперативной информации и предложений.
+          </div>
+        </details>
+      </div>
+
+      <div class="start-wrap">
+        <button class="start-btn" onclick="window.location.href='form.html'">Начало</button>
+      </div>
+    </div>
+  </main>
+
+  <div class="footer-links">
+    <div class="footer-links-inner">
+      <a href="privacy.html">Политика конфиденциальности</a>
+      <a href="accessibility.html">Декларация о доступности</a>
+    </div>
+  </div>
+  <footer class="copyright">
+    <div class="container">© CHUNGO SECRET 2026</div>
+  </footer>
+</body>
+</html>

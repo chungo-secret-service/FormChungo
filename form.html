@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CHUNGO SECRET | Передать информацию</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --page-bg: #1a1d2c;
+      --panel-bg: #f4f5f6;
+      --panel-head: #ffffff;
+      --panel-stage: #dfe3e4;
+      --line: #b8c1c6;
+      --line-soft: #ced5d9;
+      --text-main: #12343a;
+      --text-body: #26353f;
+      --text-muted: #55656f;
+      --teal: #005f63;
+      --teal-hover: #0a767b;
+      --info-bg: #d7e7f8;
+      --info-border: #1761c4;
+      --danger: #b03a3a;
+      --shadow: 0 16px 44px rgba(4, 8, 14, 0.38);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.08), transparent 40%),
+        linear-gradient(180deg, #1a1d2c, #181b28);
+      font-family: 'Roboto', Arial, sans-serif;
+      color: var(--text-body);
+      line-height: 1.45;
+      padding: 2.6rem 1rem;
+    }
+
+    .shell {
+      width: min(1460px, 100%);
+      margin: 0 auto;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: var(--shadow);
+      background: var(--panel-bg);
+    }
+
+    .shell-top {
+      background: var(--panel-head);
+      padding: 1.05rem 1.45rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 0.92rem;
+      min-width: 0;
+    }
+
+    .brand-text {
+      min-width: 0;
+      color: #0f424f;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.06;
+    }
+
+    .brand-text small {
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #365d69;
+    }
+
+    .brand-text strong {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #143f49;
+    }
+
+    .report-title {
+      color: #0f5a66;
+      font-size: clamp(1.28rem, 2.2vw, 2.05rem);
+      font-weight: 500;
+      margin-left: 0.32rem;
+      white-space: nowrap;
+    }
+
+    .back-link {
+      color: #0f5f6a;
+      text-decoration: none;
+      font-size: 0.95rem;
+      border-bottom: 1px solid transparent;
+      flex-shrink: 0;
+    }
+
+    .back-link:hover {
+      border-bottom-color: #0f5f6a;
+    }
+
+    .stage-head {
+      background: var(--panel-stage);
+      border-bottom: 1px solid var(--line-soft);
+      padding: 1.15rem 1.45rem 1.25rem;
+    }
+
+    .stage-head h1 {
+      color: #0b4f59;
+      font-size: clamp(2rem, 3vw, 3.1rem);
+      font-weight: 500;
+      margin-bottom: 0.95rem;
+      line-height: 1;
+    }
+
+    .progress {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0.55rem;
+      padding-top: 0.15rem;
+    }
+
+    .progress-line,
+    .progress-fill {
+      position: absolute;
+      top: 17px;
+      left: 18px;
+      right: 18px;
+      height: 2px;
+    }
+
+    .progress-line {
+      background: #b6bfc5;
+    }
+
+    .progress-fill {
+      width: 0;
+      right: auto;
+      background: #0a5f69;
+      transition: width 0.35s ease;
+    }
+
+    .step-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.58rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      border: 2px solid #adb8bf;
+      background: #eff2f4;
+      color: #4d5d68;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: all 0.25s ease;
+    }
+
+    .step.active,
+    .step.completed {
+      border-color: #0b5a64;
+      background: #0b5a64;
+      color: #f4fbfd;
+      box-shadow: 0 0 0 2px rgba(11, 90, 100, 0.2);
+    }
+
+    .step-label {
+      color: #1f4e57;
+      font-size: 0.87rem;
+      font-weight: 500;
+      line-height: 1.2;
+      max-width: 9ch;
+    }
+
+    .info-bar {
+      border-left: 4px solid var(--info-border);
+      background: var(--info-bg);
+      color: #102f57;
+      font-size: 0.99rem;
+      padding: 0.78rem 1rem;
+    }
+
+    .security-box {
+      margin: 1rem 1.45rem 0;
+      background: #eef5f7;
+      border: 1px solid #cadde2;
+      border-radius: 5px;
+      padding: 0.84rem 0.95rem;
+    }
+
+    .security-box h2 {
+      color: #0f5964;
+      font-size: 1.02rem;
+      font-weight: 700;
+      margin-bottom: 0.55rem;
+    }
+
+    .security-box ul {
+      margin-left: 1.05rem;
+      color: #34535c;
+      font-size: 0.93rem;
+    }
+
+    .security-box li {
+      margin-bottom: 0.33rem;
+    }
+
+    .form-zone {
+      padding: 1.05rem 1.45rem 1.55rem;
+      background: #ffffff;
+    }
+
+    .card {
+      min-height: 420px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .section-title {
+      color: #0f4b56;
+      font-size: clamp(1.7rem, 2.4vw, 2.9rem);
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 0.42rem;
+    }
+
+    .section-subtitle {
+      color: #4b5e67;
+      font-size: 0.98rem;
+      margin-bottom: 0.72rem;
+    }
+
+    .question {
+      color: #0f4f59;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin: 0.52rem 0 0.38rem;
+    }
+
+    .radio-group {
+      display: grid;
+      gap: 0.34rem;
+      max-width: 640px;
+    }
+
+    .radio-group label {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.68rem;
+      color: #364750;
+      font-size: 1.04rem;
+      padding: 0.12rem 0;
+      cursor: pointer;
+    }
+
+    input[type="radio"] {
+      margin-top: 0.2rem;
+      width: 21px;
+      height: 21px;
+      accent-color: #0a5d67;
+      flex-shrink: 0;
+    }
+
+    textarea,
+    input[type="text"],
+    select {
+      width: 100%;
+      max-width: 640px;
+      border: 1px solid #c6ced3;
+      background: #fff;
+      color: #22353f;
+      border-radius: 4px;
+      padding: 0.72rem 0.75rem;
+      font-size: 1rem;
+      font-family: inherit;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    textarea {
+      min-height: 164px;
+      resize: vertical;
+      line-height: 1.45;
+    }
+
+    textarea:focus,
+    input[type="text"]:focus,
+    select:focus {
+      outline: none;
+      border-color: #0a5f69;
+      box-shadow: 0 0 0 3px rgba(10, 95, 105, 0.12);
+    }
+
+    .field-label {
+      display: block;
+      margin: 1.05rem 0 0.42rem;
+      color: #1b4f59;
+      font-size: 1.02rem;
+      font-weight: 700;
+    }
+
+    .review-item {
+      max-width: 760px;
+      padding: 0.7rem 0.78rem;
+      border: 1px solid #d2dadd;
+      border-radius: 4px;
+      background: #f8fafb;
+      margin-bottom: 0.68rem;
+    }
+
+    .review-item strong {
+      display: block;
+      color: #0f4f59;
+      font-size: 0.87rem;
+      margin-bottom: 0.28rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .review-item pre {
+      font-family: inherit;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #2d424b;
+    }
+
+    .human-check {
+      max-width: 640px;
+      margin: 0.2rem 0 0.9rem;
+      padding: 0.7rem 0.78rem;
+      border: 1px solid #d6dfe2;
+      border-radius: 4px;
+      background: #f5f8fa;
+    }
+
+    .human-check strong {
+      display: block;
+      color: #0f4f59;
+      margin-bottom: 0.45rem;
+      font-size: 0.94rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .human-check label {
+      display: block;
+      font-size: 0.96rem;
+      color: #344b54;
+      margin-bottom: 0.35rem;
+    }
+
+    .buttons {
+      margin-top: auto;
+      padding-top: 1.05rem;
+      display: flex;
+      gap: 0.82rem;
+      align-items: center;
+    }
+
+    button {
+      min-width: 130px;
+      border-radius: 2px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      font-size: 1.05rem;
+      padding: 0.74rem 1.4rem;
+      font-weight: 500;
+      font-family: inherit;
+      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .prev {
+      border-color: #0a5d67;
+      background: #f5f8f9;
+      color: #0a5d67;
+    }
+
+    .prev:hover:not(:disabled) {
+      background: #e4edf0;
+    }
+
+    .next,
+    .submit {
+      background: var(--teal);
+      color: #fff;
+    }
+
+    .next:hover:not(:disabled),
+    .submit:hover:not(:disabled) {
+      background: var(--teal-hover);
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .submit.loading {
+      background: #3c7076;
+      cursor: wait;
+    }
+
+    .honeypot {
+      position: absolute;
+      left: -10000px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #success-overlay,
+    #error-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(8, 13, 23, 0.74);
+      display: none;
+      place-items: center;
+      z-index: 9999;
+      padding: 1rem;
+    }
+
+    .overlay-content {
+      width: min(460px, 100%);
+      background: #fff;
+      border: 1px solid #cfd9de;
+      border-radius: 6px;
+      padding: 1.22rem 1.15rem;
+      text-align: center;
+      color: #1f3e48;
+    }
+
+    .overlay-content h2 {
+      font-size: 1.8rem;
+      margin-bottom: 0.4rem;
+      color: #0f5560;
+      font-weight: 500;
+    }
+
+    .overlay-content p {
+      color: #3d5560;
+      font-size: 1rem;
+      line-height: 1.42;
+    }
+
+    @media (max-width: 980px) {
+      .shell-top,
+      .stage-head,
+      .form-zone {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+
+      .security-box {
+        margin-left: 1rem;
+        margin-right: 1rem;
+      }
+
+      .step-label {
+        font-size: 0.77rem;
+      }
+    }
+
+    @media (max-width: 760px) {
+      body {
+        padding: 1rem 0.5rem;
+      }
+
+      .shell-top {
+        flex-wrap: wrap;
+      }
+
+      .back-link {
+        order: 3;
+      }
+
+      .report-title {
+        white-space: normal;
+      }
+
+      .progress {
+        gap: 0.2rem;
+      }
+
+      .step {
+        width: 31px;
+        height: 31px;
+        font-size: 0.9rem;
+      }
+
+      .card {
+        min-height: 390px;
+      }
+
+      .buttons {
+        flex-direction: column-reverse;
+        align-items: stretch;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="shell-top">
+      <div class="brand-group">
+        <div class="brand-text">
+          <small>Chungo Secret Service</small>
+          <strong>CHUNGO SECRET</strong>
+        </div>
+        <div class="report-title">Передать информацию</div>
+      </div>
+      <a class="back-link" href="index.html">Вернуться на главную</a>
+    </div>
+
+    <div class="stage-head">
+      <h1 id="stageTitle">Тема</h1>
+      <div class="progress">
+        <div class="progress-line"></div>
+        <div class="progress-fill" id="progressFill"></div>
+        <div class="step-wrapper"><div class="step active">1</div><div class="step-label">Тема</div></div>
+        <div class="step-wrapper"><div class="step">2</div><div class="step-label">Сообщение</div></div>
+        <div class="step-wrapper"><div class="step">3</div><div class="step-label">Связь</div></div>
+        <div class="step-wrapper"><div class="step">4</div><div class="step-label">Детали</div></div>
+        <div class="step-wrapper"><div class="step">5</div><div class="step-label">Проверка</div></div>
+      </div>
+    </div>
+
+    <div class="info-bar">
+      <strong>Важно:</strong> не обновляйте форму во время заполнения, иначе введённые данные будут потеряны.
+    </div>
+
+    <div class="security-box">
+      <h2>Протокол безопасности Anti-Spam Shield</h2>
+      <ul>
+        <li>Минимальное время заполнения и контроль активности пользователя перед отправкой.</li>
+        <li>Скрытая антибот-проверка (honeypot) для автоматических скриптов.</li>
+        <li>Лимиты отправки: 1 сообщение в 90 секунд и не более 3 сообщений в час с одного браузера.</li>
+        <li>Проверка текста на спам-паттерны: избыток ссылок, повтор символов, агрессивный CAPS.</li>
+        <li>Контрольный human-check и ручная модерация всех заявок администраторами.</li>
+      </ul>
+    </div>
+
+    <div class="form-zone">
+      <input type="text" id="websiteField" name="website" class="honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+      <div class="card" id="step1">
+        <h2 class="section-title">Тема</h2>
+        <p class="section-subtitle">Это поможет направить сообщение нужной команде.</p>
+
+        <div class="question">К чему относится ваше сообщение? *</div>
+        <div class="radio-group">
+          <label><input type="radio" name="theme" value="improvement" required> Улучшение сервера / идеи / предложения</label>
+          <label><input type="radio" name="theme" value="violation"> Нарушение правил / жалоба на участника</label>
+          <label><input type="radio" name="theme" value="security"> Безопасность клуба / подозрительная активность</label>
+          <label><input type="radio" name="theme" value="event"> Идея мероприятия / ивента</label>
+          <label><input type="radio" name="theme" value="other" id="otherRadio"> Другое</label>
+        </div>
+
+        <div id="otherConditional" class="hidden">
+          <label class="field-label" for="otherTheme">Если выбрали «Другое», уточните тему *</label>
+          <select id="otherTheme">
+            <option value="">Выберите вариант...</option>
+            <option value="nitro">Nitro Boost / поддержка сервера</option>
+            <option value="roles">Роли / ранги / доступы</option>
+            <option value="channels">Новые каналы / категории</option>
+            <option value="bots">Боты / функции / автоматизация</option>
+            <option value="partnership">Партнёрство / реклама</option>
+            <option value="confidential">Конфиденциальная информация</option>
+          </select>
+        </div>
+
+        <div class="buttons">
+          <button class="prev" disabled>Назад</button>
+          <button class="next" data-action="next">Далее</button>
+        </div>
+      </div>
+
+      <div class="card hidden" id="step2">
+        <h2 class="section-title">Сообщение</h2>
+        <p class="section-subtitle">Опишите детали максимально конкретно. Поля со звёздочкой обязательны.</p>
+
+        <div class="question">Ваше сообщение *</div>
+        <textarea id="message" placeholder="Опишите ситуацию подробно... (минимум 15 символов)" required minlength="15"></textarea>
+
+        <div class="buttons">
+          <button class="prev" data-action="prev">Назад</button>
+          <button class="next" data-action="next">Далее</button>
+        </div>
+      </div>
+
+      <div class="card hidden" id="step3">
+        <h2 class="section-title">Связь</h2>
+        <p class="section-subtitle">Указывайте только безопасный канал связи, если нужен ответ.</p>
+
+        <div class="question">Как с вами связаться?</div>
+        <div class="radio-group">
+          <label><input type="radio" name="contact" value="none" checked> Ответ не нужен</label>
+          <label><input type="radio" name="contact" value="discord"> Discord (@username или ID)</label>
+          <label><input type="radio" name="contact" value="email"> Временная анонимная почта</label>
+          <label><input type="radio" name="contact" value="other"> Другой безопасный способ</label>
+        </div>
+
+        <label class="field-label" for="contactDetails">Контактные детали (если нужен ответ)</label>
+        <textarea id="contactDetails" placeholder="Укажите @username, ID, email или другой канал..."></textarea>
+
+        <div class="buttons">
+          <button class="prev" data-action="prev">Назад</button>
+          <button class="next" data-action="next">Далее</button>
+        </div>
+      </div>
+
+      <div class="card hidden" id="step4">
+        <h2 class="section-title">Личные данные</h2>
+        <p class="section-subtitle">Этот шаг необязательный, укажите только то, что действительно нужно.</p>
+
+        <label class="field-label" for="nickname">Временный ник / ID</label>
+        <input type="text" id="nickname" placeholder="Если хотите указать">
+
+        <label class="field-label" for="context">Дополнительный контекст / доказательства</label>
+        <textarea id="context" placeholder="Дополнительные детали, ссылки на доказательства, уточнения..." rows="4"></textarea>
+
+        <div class="buttons">
+          <button class="prev" data-action="prev">Назад</button>
+          <button class="next" data-action="next">Далее</button>
+        </div>
+      </div>
+
+      <div class="card hidden" id="step5">
+        <h2 class="section-title">Проверка</h2>
+        <p class="section-subtitle">Проверьте данные перед отправкой.</p>
+
+        <div class="review-item">
+          <strong>Тема</strong>
+          <div id="reviewTheme">—</div>
+        </div>
+        <div class="review-item">
+          <strong>Сообщение</strong>
+          <pre id="reviewMessage">—</pre>
+        </div>
+        <div class="review-item">
+          <strong>Связь</strong>
+          <div id="reviewContact">—</div>
+        </div>
+        <div class="review-item">
+          <strong>Дополнительно</strong>
+          <div id="reviewDetails">—</div>
+        </div>
+
+        <div class="human-check">
+          <strong>Проверка безопасности *</strong>
+          <label for="humanAnswer">Подтвердите, что вы человек: <span id="humanQuestion">-</span></label>
+          <input type="text" id="humanAnswer" inputmode="numeric" autocomplete="off" placeholder="Введите ответ">
+        </div>
+
+        <div class="buttons">
+          <button class="prev" data-action="prev">Назад</button>
+          <button class="submit" id="submitBtn">Отправить</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="success-overlay" style="display:none;">
+    <div class="overlay-content">
+      <h2>Отправлено</h2>
+      <p>Сообщение принято в защищённый канал CHUNGO SECRET.<br>Сейчас выполняется возврат...</p>
+    </div>
+  </div>
+
+  <div id="error-overlay" style="display:none;">
+    <div class="overlay-content">
+      <h2 id="errorTitle">Ошибка</h2>
+      <p id="errorText"></p>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = "https://local-1-u0v3.onrender.com/submit";
+    const SECRET_TOKEN = "9k2p7m4q8r5t1v3x6z0j";
+    const REDIRECT_URL = "index.html";
+
+    const COOLDOWN_KEY = "chungo_submit_time";
+    const HOURLY_LOG_KEY = "chungo_submit_log_v2";
+    const SESSION_KEY = "chungo_secret_session";
+
+    const SECURITY_PROTOCOL = {
+      minFillMs: 45000,
+      minInteractions: 8,
+      minCriticalStepReadMs: 12000,
+      cooldownMs: 90000,
+      hourlyWindowMs: 3600000,
+      hourlyLimit: 3,
+      maxLinks: 2,
+      maxRepeatedChars: 7,
+      maxCapsRatio: 0.75
+    };
+
+    let currentStep = 1;
+    const totalSteps = 5;
+    let isSubmitting = false;
+    let formStartTime = Date.now();
+
+    let stepEnteredAt = Date.now();
+    const stepDurations = Array(totalSteps + 1).fill(0);
+    let interactionScore = 0;
+
+    const STEP_TITLES = {
+      1: "Тема",
+      2: "Сообщение",
+      3: "Связь",
+      4: "Личные данные",
+      5: "Проверка"
+    };
+
+    const HUMAN_CHECK = createHumanCheck();
+
+    function createHumanCheck() {
+      const left = Math.floor(Math.random() * 6) + 3;
+      const right = Math.floor(Math.random() * 6) + 2;
+      return { left, right, answer: left + right };
+    }
+
+    function getSessionId() {
+      let sessionId = null;
+      try {
+        sessionId = sessionStorage.getItem(SESSION_KEY);
+      } catch {
+        sessionId = null;
+      }
+
+      if (!sessionId) {
+        sessionId = typeof crypto !== "undefined" && crypto.randomUUID
+          ? crypto.randomUUID()
+          : `sess_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+        try {
+          sessionStorage.setItem(SESSION_KEY, sessionId);
+        } catch {
+          // Ignore storage failures in strict browser modes.
+        }
+      }
+
+      return sessionId;
+    }
+
+    const SESSION_ID = getSessionId();
+
+    function storageGet(key) {
+      try {
+        return localStorage.getItem(key);
+      } catch {
+        return null;
+      }
+    }
+
+    function storageSet(key, value) {
+      try {
+        localStorage.setItem(key, value);
+      } catch {
+        // Ignore storage failures.
+      }
+    }
+
+    function parseJsonArray(value) {
+      if (!value) return [];
+      try {
+        const parsed = JSON.parse(value);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function getHourlyLog(now) {
+      const all = parseJsonArray(storageGet(HOURLY_LOG_KEY));
+      const filtered = all.filter((ts) => Number.isFinite(ts) && now - ts < SECURITY_PROTOCOL.hourlyWindowMs);
+      storageSet(HOURLY_LOG_KEY, JSON.stringify(filtered));
+      return filtered;
+    }
+
+    function rememberSuccessfulSubmit(now) {
+      storageSet(COOLDOWN_KEY, String(now));
+      const log = getHourlyLog(now);
+      log.push(now);
+      storageSet(HOURLY_LOG_KEY, JSON.stringify(log));
+    }
+
+    function registerInteraction() {
+      interactionScore += 1;
+    }
+
+    function finalizeStepTimer() {
+      const now = Date.now();
+      stepDurations[currentStep] += Math.max(0, now - stepEnteredAt);
+      stepEnteredAt = now;
+    }
+
+    function formatWait(seconds) {
+      if (seconds < 60) return `${seconds} сек`;
+      const mins = Math.ceil(seconds / 60);
+      return `${mins} мин`;
+    }
+
+    function showError(title, message) {
+      document.getElementById("errorTitle").textContent = title;
+      document.getElementById("errorText").innerHTML = message;
+      document.getElementById("error-overlay").style.display = "grid";
+      setTimeout(() => {
+        document.getElementById("error-overlay").style.display = "none";
+      }, 10000);
+    }
+
+    function updateProgress() {
+      const percent = ((currentStep - 1) / (totalSteps - 1)) * 100;
+      document.getElementById("progressFill").style.width = percent + "%";
+
+      document.querySelectorAll(".step").forEach((el, i) => {
+        const stepNum = i + 1;
+        el.classList.toggle("completed", stepNum < currentStep);
+        el.classList.toggle("active", stepNum === currentStep);
+      });
+
+      document.getElementById("stageTitle").textContent = STEP_TITLES[currentStep] || "Тема";
+    }
+
+    function showStep(n, options = {}) {
+      if (!options.skipTimer) finalizeStepTimer();
+
+      document.querySelectorAll(".card").forEach((card) => card.classList.add("hidden"));
+      document.getElementById(`step${n}`).classList.remove("hidden");
+      currentStep = n;
+      stepEnteredAt = Date.now();
+
+      updateProgress();
+      if (n === totalSteps) updateReview();
+    }
+
+    function validateCurrentStep() {
+      if (currentStep === 1) {
+        const selected = document.querySelector('input[name="theme"]:checked');
+        if (!selected) return "Выберите тему";
+        if (selected.value === "other" && !document.getElementById("otherTheme").value) {
+          return "Уточните тему в выпадающем списке";
+        }
+        return true;
+      }
+
+      if (currentStep === 2) {
+        const msg = document.getElementById("message").value.trim();
+        if (msg.length < 15) {
+          return `Сообщение слишком короткое (${msg.length} символов). Минимум 15.`;
+        }
+        return true;
+      }
+
+      if (currentStep === 3) {
+        const contactType = document.querySelector('input[name="contact"]:checked')?.value || "none";
+        const details = document.getElementById("contactDetails").value.trim();
+        if (contactType !== "none" && details.length < 3) {
+          return "Укажите контактные детали для выбранного способа связи";
+        }
+      }
+
+      return true;
+    }
+
+    function countLinks(text) {
+      const matches = text.match(/(?:https?:\/\/|www\.|discord\.gg\/|t\.me\/|bit\.ly\/)/gi);
+      return matches ? matches.length : 0;
+    }
+
+    function hasRepeatedChars(text) {
+      const pattern = new RegExp(`(.)\\1{${SECURITY_PROTOCOL.maxRepeatedChars},}`, "u");
+      return pattern.test(text);
+    }
+
+    function hasAggressiveCaps(text) {
+      const letters = text.match(/[A-Za-zА-Яа-яЁё]/g) || [];
+      if (letters.length < 30) return false;
+      const upper = text.match(/[A-ZА-ЯЁ]/g) || [];
+      return upper.length / letters.length > SECURITY_PROTOCOL.maxCapsRatio;
+    }
+
+    function validateSecurityProtocol() {
+      const now = Date.now();
+
+      if (document.getElementById("websiteField").value.trim()) {
+        return { ok: false, reason: "Обнаружена автоматическая отправка. Очистите форму и попробуйте снова." };
+      }
+
+      const elapsed = now - formStartTime;
+      if (elapsed < SECURITY_PROTOCOL.minFillMs) {
+        const wait = Math.ceil((SECURITY_PROTOCOL.minFillMs - elapsed) / 1000);
+        return { ok: false, reason: `Форма заполнена слишком быстро. Подождите ещё ${wait} сек.` };
+      }
+
+      const criticalReadTime = stepDurations[1] + stepDurations[2];
+      if (criticalReadTime < SECURITY_PROTOCOL.minCriticalStepReadMs) {
+        const wait = Math.ceil((SECURITY_PROTOCOL.minCriticalStepReadMs - criticalReadTime) / 1000);
+        return { ok: false, reason: `Нужно немного больше времени на заполнение темы и сообщения (${wait} сек).` };
+      }
+
+      if (interactionScore < SECURITY_PROTOCOL.minInteractions) {
+        return { ok: false, reason: "Недостаточно взаимодействий с формой. Повторите заполнение вручную." };
+      }
+
+      const lastSubmit = Number(storageGet(COOLDOWN_KEY)) || 0;
+      if (now - lastSubmit < SECURITY_PROTOCOL.cooldownMs) {
+        const remaining = Math.ceil((SECURITY_PROTOCOL.cooldownMs - (now - lastSubmit)) / 1000);
+        return { ok: false, reason: `Лимит частоты: подождите ещё ${formatWait(remaining)} перед повторной отправкой.` };
+      }
+
+      const hourlyLog = getHourlyLog(now);
+      if (hourlyLog.length >= SECURITY_PROTOCOL.hourlyLimit) {
+        const oldest = hourlyLog[0];
+        const waitSec = Math.ceil((SECURITY_PROTOCOL.hourlyWindowMs - (now - oldest)) / 1000);
+        return { ok: false, reason: `Превышен лимит ${SECURITY_PROTOCOL.hourlyLimit} сообщений в час. Повторите через ${formatWait(waitSec)}.` };
+      }
+
+      const message = document.getElementById("message").value.trim();
+      const context = document.getElementById("context").value.trim();
+      const contactDetails = document.getElementById("contactDetails").value.trim();
+      const combinedText = `${message}\n${context}\n${contactDetails}`;
+
+      const linkCount = countLinks(combinedText);
+      if (linkCount > SECURITY_PROTOCOL.maxLinks) {
+        return { ok: false, reason: `Слишком много ссылок (${linkCount}). Разрешено не более ${SECURITY_PROTOCOL.maxLinks}.` };
+      }
+
+      if (hasRepeatedChars(combinedText)) {
+        return { ok: false, reason: "Текст похож на спам (повтор символов). Сформулируйте сообщение обычным текстом." };
+      }
+
+      if (hasAggressiveCaps(message)) {
+        return { ok: false, reason: "Текст содержит слишком много CAPS. Пожалуйста, используйте обычный регистр." };
+      }
+
+      const humanAnswer = Number(document.getElementById("humanAnswer").value.trim());
+      if (!Number.isFinite(humanAnswer) || humanAnswer !== HUMAN_CHECK.answer) {
+        return { ok: false, reason: "Проверка безопасности не пройдена. Введите правильный ответ в human-check." };
+      }
+
+      return {
+        ok: true,
+        now,
+        linkCount,
+        elapsed,
+        hourlyCount: hourlyLog.length
+      };
+    }
+
+    function goNext() {
+      const valid = validateCurrentStep();
+      if (valid !== true) {
+        alert(valid);
+        return;
+      }
+      if (currentStep < totalSteps) showStep(currentStep + 1);
+    }
+
+    function goPrev() {
+      if (currentStep > 1) showStep(currentStep - 1);
+    }
+
+    function updateReview() {
+      const themeEl = document.querySelector('input[name="theme"]:checked');
+      let themeText = themeEl ? themeEl.parentElement.textContent.trim() : "—";
+      if (themeEl?.value === "other") {
+        const option = document.getElementById("otherTheme").selectedOptions[0];
+        if (option?.value) themeText += ` (${option.text})`;
+      }
+
+      const message = document.getElementById("message").value.trim() || "—";
+      const contactEl = document.querySelector('input[name="contact"]:checked');
+      let contactText = contactEl ? contactEl.parentElement.textContent.trim() : "—";
+      const contactDetails = document.getElementById("contactDetails").value.trim();
+      if (contactDetails) contactText += ` (${contactDetails})`;
+
+      const nickname = document.getElementById("nickname").value.trim();
+      const context = document.getElementById("context").value.trim();
+      const extras = [];
+      if (nickname) extras.push(`Ник/ID: ${nickname}`);
+      if (context) extras.push(context);
+
+      document.getElementById("reviewTheme").textContent = themeText;
+      document.getElementById("reviewMessage").textContent = message;
+      document.getElementById("reviewContact").textContent = contactText;
+      document.getElementById("reviewDetails").textContent = extras.length ? extras.join(" • ") : "—";
+    }
+
+    async function handleSubmit() {
+      if (isSubmitting) return;
+
+      const stepValidation = validateCurrentStep();
+      if (stepValidation !== true) {
+        alert(stepValidation);
+        return;
+      }
+
+      finalizeStepTimer();
+
+      const protocolCheck = validateSecurityProtocol();
+      if (!protocolCheck.ok) {
+        showError("Протокол безопасности", protocolCheck.reason);
+        return;
+      }
+
+      isSubmitting = true;
+      const submitBtn = document.getElementById("submitBtn");
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Отправка...";
+      submitBtn.classList.add("loading");
+
+      const themeValue = document.querySelector('input[name="theme"]:checked')?.value || "";
+      const contactValue = document.querySelector('input[name="contact"]:checked')?.value || "none";
+      const contactDetails = document.getElementById("contactDetails").value.trim();
+
+      const formData = new FormData();
+      formData.append("theme", themeValue);
+      formData.append("other_theme", document.getElementById("otherTheme").value || "");
+      formData.append("message", document.getElementById("message").value.trim());
+      formData.append("contact", contactValue);
+      formData.append("contact_details", contactDetails || "—");
+      formData.append("nickname", document.getElementById("nickname").value.trim() || "—");
+      formData.append("context", document.getElementById("context").value.trim() || "—");
+      formData.append("secret", SECRET_TOKEN);
+      formData.append("session_id", SESSION_ID);
+      formData.append("security_meta", JSON.stringify({
+        protocol: "anti-spam-shield-v1",
+        fill_ms: protocolCheck.elapsed,
+        interactions: interactionScore,
+        links: protocolCheck.linkCount,
+        steps_ms: stepDurations.slice(1),
+        hour_submits_before: protocolCheck.hourlyCount
+      }));
+
+      try {
+        const response = await fetch(API_URL, {
+          method: "POST",
+          body: formData
+        });
+
+        if (!response.ok) {
+          let errorMessage = `Сервер ответил кодом ${response.status}`;
+          try {
+            const errData = await response.json();
+            if (errData?.detail) errorMessage = errData.detail;
+          } catch {
+            // Ignore json parse errors.
+          }
+          throw new Error(errorMessage);
+        }
+
+        rememberSuccessfulSubmit(protocolCheck.now);
+        document.getElementById("success-overlay").style.display = "grid";
+        setTimeout(() => {
+          location.href = REDIRECT_URL;
+        }, 1200);
+      } catch (error) {
+        console.error("Submit failed:", error);
+        showError("Не удалось отправить", `${error.message}<br><br>Попробуйте позже или напишите напрямую модератору.`);
+      } finally {
+        isSubmitting = false;
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Отправить";
+        submitBtn.classList.remove("loading");
+      }
+    }
+
+    function syncOtherThemeVisibility() {
+      const otherSelected = document.getElementById("otherRadio").checked;
+      const block = document.getElementById("otherConditional");
+      const select = document.getElementById("otherTheme");
+      block.classList.toggle("hidden", !otherSelected);
+      select.required = otherSelected;
+      if (!otherSelected) select.value = "";
+    }
+
+    function setupInteractionTracking() {
+      ["input", "change", "keydown", "paste"].forEach((eventName) => {
+        document.addEventListener(eventName, registerInteraction, { capture: true });
+      });
+    }
+
+    document.querySelectorAll('input[name="theme"]').forEach((input) => {
+      input.addEventListener("change", syncOtherThemeVisibility);
+    });
+
+    document.addEventListener("click", (event) => {
+      registerInteraction();
+      const target = event.target;
+      if (target.matches("[data-action='next']")) goNext();
+      if (target.matches("[data-action='prev']")) goPrev();
+      if (target.id === "submitBtn") handleSubmit();
+    });
+
+    document.getElementById("humanQuestion").textContent = `${HUMAN_CHECK.left} + ${HUMAN_CHECK.right} = ?`;
+
+    setupInteractionTracking();
+    syncOtherThemeVisibility();
+    showStep(1, { skipTimer: true });
+  </script>
+</body>
+</html>
